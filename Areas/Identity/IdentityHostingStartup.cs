@@ -16,9 +16,6 @@ namespace Distribuerade_System_Labb_2.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<Distribuerade_System_Labb_2Context>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("Distribuerade_System_Labb_2ContextConnection")));
 
                 services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<Distribuerade_System_Labb_2Context>();
