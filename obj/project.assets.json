@@ -8355,19 +8355,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Wariu\\.nuget\\packages\\": {}
+    "C:\\Users\\faraDJ\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\OTHER HDD\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
+      "projectUniqueName": "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
       "projectName": "Distribuerade-System-Labb-2",
-      "projectPath": "F:\\OTHER HDD\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
-      "packagesPath": "C:\\Users\\Wariu\\.nuget\\packages\\",
-      "outputPath": "F:\\OTHER HDD\\Documents\\GitHub\\Distribuerade-System-Labb-2\\obj\\",
+      "projectPath": "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
+      "packagesPath": "C:\\Users\\faraDJ\\.nuget\\packages\\",
+      "outputPath": "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Wariu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\faraDJ\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
