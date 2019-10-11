@@ -1,21 +1,18 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj": {}
+    "C:\\Users\\faraDJ\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj": {}
   },
   "projects": {
-    "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj": {
+    "C:\\Users\\faraDJ\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
+        "projectUniqueName": "C:\\Users\\faraDJ\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
         "projectName": "Distribuerade-System-Labb-2",
-        "projectPath": "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
+        "projectPath": "C:\\Users\\faraDJ\\Documents\\GitHub\\Distribuerade-System-Labb-2\\Distribuerade-System-Labb-2.csproj",
         "packagesPath": "C:\\Users\\faraDJ\\.nuget\\packages\\",
-        "outputPath": "D:\\Documents\\GitHub\\Distribuerade-System-Labb-2\\obj\\",
+        "outputPath": "C:\\Users\\faraDJ\\Documents\\GitHub\\Distribuerade-System-Labb-2\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\faraDJ\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
