@@ -11,14 +11,14 @@ namespace Disribuerade_System_Labb_2.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public string Body { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public Boolean Read { get; set; }
         public Boolean Deleted { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required.")]
         public DateTime Sent { get; set; }
 
         [ForeignKey("AppUser")]
