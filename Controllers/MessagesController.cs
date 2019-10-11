@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Distribuerade_System_Labb_2.Models;
+using Disribuerade_System_Labb_2.Models;
+using Distibuerade_System_Labb_2.Models;
 
 namespace Distribuerade_System_Labb_2.Controllers
 {
     public class MessagesController : Controller
     {
-        private readonly MessageContext _context;
+        private readonly Distribuerade_System_Labb_2Context _context;
 
-        public MessagesController(MessageContext context)
+        public MessagesController(Distribuerade_System_Labb_2Context context)
         {
             _context = context;
         }

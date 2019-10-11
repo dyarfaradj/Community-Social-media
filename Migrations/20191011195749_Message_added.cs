@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Distribuerade_System_Labb_2.Migrations
+namespace Disribuerade_System_Labb_2.Migrations
 {
-    public partial class Message_Added : Migration
+    public partial class Message_added : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +13,7 @@ namespace Distribuerade_System_Labb_2.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: false),
                     Body = table.Column<string>(nullable: false),
                     Read = table.Column<bool>(nullable: false),

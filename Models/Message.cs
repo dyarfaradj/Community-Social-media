@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Distribuerade_System_Labb_2.Models
+namespace Disribuerade_System_Labb_2.Models
 {
     public class Message
     {
