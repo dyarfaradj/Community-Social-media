@@ -76,3 +76,4 @@ _[Ss]cripts
 *.dot[Cc]over
 obj/Distribuerade-System-Labb-2.csproj.nuget.dgspec.json
 *.cache
+*.cache
