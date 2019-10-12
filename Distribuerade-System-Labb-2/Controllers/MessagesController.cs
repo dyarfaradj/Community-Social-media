@@ -59,10 +59,12 @@ namespace Distribuerade_System_Labb_2.Controllers
         {
             var users = _context.Users.ToList();
             List<SelectListItem> usernameList = new List<SelectListItem>();
+            string currentUserId =  _userManager.GetUserId(User);
 
             foreach (Distribuerade_System_Labb_2User u in users)
             {
-                usernameList.Add(new SelectListItem { Value = u.Id, Text = u.UserName });
+                if(u.Id != currentUserId) //Tar bort personen själv i listan
+                 usernameList.Add(new SelectListItem { Value = u.Id, Text = u.UserName });
             }
 
             ViewBag.Users = new SelectList(usernameList, "Value", "Text");
