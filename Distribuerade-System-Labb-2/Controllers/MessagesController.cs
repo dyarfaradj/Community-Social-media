@@ -26,8 +26,18 @@ namespace Distribuerade_System_Labb_2.Controllers
         public async Task<IActionResult> Index()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            List<Message> messages = await _context.Messages.Where(message =>( (message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id)) && message.Read.Equals(false))).ToListAsync();
+            List<Message> messages = await _context.Messages.Where(message =>
+            ( (message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id)) 
+            && message.Deleted.Equals(false))).ToListAsync();
+            var messages2 = _context.Messages.ToList();
+            int SumDeleted = 0;
+            foreach (Message m in messages2)
+            {
+                if (m.User == currentUser && m.Deleted != false) //Tar bort personen själv i listan
+                    SumDeleted++;
+            }
 
+            ViewBag.NoOfDeletedMessages = SumDeleted;
             return View(messages);
         }
 
@@ -174,11 +184,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 return NotFound();
             }
-            if (!IsItemByCurrentUser(message))
-            {
-                return Unauthorized();
-            }
-
+            
 
             message.Deleted = true;
             try
@@ -205,31 +211,17 @@ namespace Distribuerade_System_Labb_2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var message = await _context.Messages.FindAsync(id);
-
-            if (!IsItemByCurrentUser(message))
-            {
-                return Unauthorized();
-            }
-
-            message.Deleted = true;
-            try
-            {
-                _context.Update(message);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MessageExists(message.Id))
+                var messages = _context.Messages.ToList();
+                int SumDeleted = 0;
+                foreach (Message message in messages)
                 {
-                    return NotFound();
+                    if (message.Deleted != false) //Tar bort personen själv i listan
+                        SumDeleted++;
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
+
+                ViewBag.NoOfDeletedMessages = SumDeleted;
+                return RedirectToAction(nameof(Index));
+            
         }
 
         private bool MessageExists(int id)
