@@ -57,8 +57,16 @@ namespace Distribuerade_System_Labb_2.Controllers
         // GET: Messages/Create
         public IActionResult Create()
         {
-            SelectList list = new SelectList(_context.Users);
-            ViewBag.Users = list;
+            var users = _context.Users.ToList();
+            List<SelectListItem> usernameList = new List<SelectListItem>();
+
+            foreach (Distribuerade_System_Labb_2User u in users)
+            {
+                usernameList.Add(new SelectListItem { Value = u.Id, Text = u.UserName });
+            }
+
+            //SelectList list = new SelectList(_context.Users);
+            ViewBag.Users = new SelectList(usernameList, "Value", "Text");
             return View();
         }
 
