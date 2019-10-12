@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Distribuerade_System_Labb_2.Models;
 using Microsoft.AspNetCore.Identity;
 using Distribuerade_System_Labb_2.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Distribuerade_System_Labb_2.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
         private readonly Distribuerade_System_Labb_2Context _context;
