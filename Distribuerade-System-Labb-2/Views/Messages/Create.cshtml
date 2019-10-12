@@ -32,9 +32,12 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        @if (TempData["ConfirmationMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["ConfirmationMessage"]</div>
+        }
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
