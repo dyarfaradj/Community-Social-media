@@ -76,7 +76,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverUser")] Message message)
+        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverId")] Message message)
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
@@ -113,7 +113,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,Read,Deleted,SentDate,ReceiverUser")] Message message)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,Read,Deleted,SentDate,ReceiverId")] Message message)
         {
             if (id != message.Id)
             {
