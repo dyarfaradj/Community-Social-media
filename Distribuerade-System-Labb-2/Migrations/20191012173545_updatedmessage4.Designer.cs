@@ -4,14 +4,16 @@ using Distribuerade_System_Labb_2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Distribuerade_System_Labb_2.Migrations
 {
     [DbContext(typeof(Distribuerade_System_Labb_2Context))]
-    partial class Distribuerade_System_Labb_2ContextModelSnapshot : ModelSnapshot
+    [Migration("20191012173545_updatedmessage4")]
+    partial class updatedmessage4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +85,7 @@ namespace Distribuerade_System_Labb_2.Migrations
 
                     b.Property<bool>("Read");
 
-                    b.Property<string>("ReceiverId");
+                    b.Property<string>("ReceiverUserId");
 
                     b.Property<DateTime>("SentDate");
 
@@ -93,6 +95,8 @@ namespace Distribuerade_System_Labb_2.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReceiverUserId");
 
                     b.HasIndex("UserId");
 
@@ -215,8 +219,12 @@ namespace Distribuerade_System_Labb_2.Migrations
 
             modelBuilder.Entity("Distribuerade_System_Labb_2.Models.Message", b =>
                 {
+                    b.HasOne("Distribuerade_System_Labb_2.Areas.Identity.Data.Distribuerade_System_Labb_2User", "ReceiverUser")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId");
+
                     b.HasOne("Distribuerade_System_Labb_2.Areas.Identity.Data.Distribuerade_System_Labb_2User", "User")
-                        .WithMany("Messages")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

@@ -26,7 +26,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         public async Task<IActionResult> Index()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            List<Message> messages = await _context.Messages.Where(message => message.User.Equals(currentUser)).ToListAsync();
+            List<Message> messages = await _context.Messages.Where(message =>( message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id))).ToListAsync();
 
             return View(messages);
         }
@@ -65,7 +65,6 @@ namespace Distribuerade_System_Labb_2.Controllers
                 usernameList.Add(new SelectListItem { Value = u.Id, Text = u.UserName });
             }
 
-            //SelectList list = new SelectList(_context.Users);
             ViewBag.Users = new SelectList(usernameList, "Value", "Text");
             return View();
         }
@@ -75,7 +74,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverId")] Message message)
+        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverUser")] Message message)
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
@@ -83,7 +82,6 @@ namespace Distribuerade_System_Labb_2.Controllers
                 message.Deleted = false;
                 message.Read = false;
                 message.SentDate = DateTime.Now;
-                message.SenderId = currentUser.Id;
                 message.User = currentUser;
                 _context.Add(message);
                 await _context.SaveChangesAsync();
@@ -113,7 +111,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,Read,Deleted,SentDate,SenderId,ReceiverId")] Message message)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,Read,Deleted,SentDate,ReceiverUser")] Message message)
         {
             if (id != message.Id)
             {
@@ -193,7 +191,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         private bool IsItemByCurrentUser(Message item)
         {
             string currentUserId = _userManager.GetUserId(User);
-            return item.SenderId.Equals(currentUserId);
+            return item.User.Id.Equals(currentUserId);
         }
     }
 }

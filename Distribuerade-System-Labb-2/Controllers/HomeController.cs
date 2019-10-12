@@ -25,10 +25,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View();
         }
 
-        private IActionResult View(Func<List<Distribuerade_System_Labb_2User>> toList)
-        {
-            throw new NotImplementedException();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

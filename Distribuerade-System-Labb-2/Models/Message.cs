@@ -22,10 +22,6 @@ namespace Distribuerade_System_Labb_2.Models
         [Required]
         public DateTime SentDate { get; set; }
 
-        [ForeignKey("Distribuerade_System_Labb_2User")]
-        public string SenderId { get; set; }
-
-        [ForeignKey("Receiver")]
         public string ReceiverId { get; set; }
 
         public virtual Distribuerade_System_Labb_2User User { get; set; }
