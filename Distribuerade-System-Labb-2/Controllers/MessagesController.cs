@@ -31,13 +31,20 @@ namespace Distribuerade_System_Labb_2.Controllers
             && message.Deleted.Equals(false))).ToListAsync();
             var messages2 = _context.Messages.ToList();
             int SumDeleted = 0;
+            int SumUnRead = 0;
             foreach (Message m in messages2)
             {
-                if (m.User == currentUser && m.Deleted != false) //Tar bort personen själv i listan
-                    SumDeleted++;
+                if(IsUserMessage(m))
+                {
+                    if (m.Deleted != false)
+                        SumDeleted++;
+                    if ( m.Read == false && m.Deleted == false)
+                        SumUnRead++;
+                }
             }
 
             ViewBag.NoOfDeletedMessages = SumDeleted;
+            ViewBag.NoOfUnReadMessages = SumUnRead;
             return View(messages);
         }
 
@@ -184,7 +191,10 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 return NotFound();
             }
-            
+            if(!IsUserMessage(message))
+            {
+                return NotFound();
+            }
 
             message.Deleted = true;
             try
@@ -232,6 +242,12 @@ namespace Distribuerade_System_Labb_2.Controllers
         private Distribuerade_System_Labb_2User GetUserById(String id)
         {
             return _context.Users.Find(id);
+        }
+
+        private bool IsUserMessage(Message message)
+        {
+            string currentUserId = _userManager.GetUserId(User);
+            return message.ReceiverId.Equals(currentUserId);
         }
 
         private bool IsItemByCurrentUser(Message message)
