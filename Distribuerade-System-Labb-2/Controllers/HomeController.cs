@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Distribuerade_System_Labb_2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Distribuerade_System_Labb_2.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Distribuerade_System_Labb_2.Controllers
 {
@@ -21,6 +23,11 @@ namespace Distribuerade_System_Labb_2.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        private IActionResult View(Func<List<Distribuerade_System_Labb_2User>> toList)
+        {
+            throw new NotImplementedException();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

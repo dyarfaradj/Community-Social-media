@@ -57,6 +57,8 @@ namespace Distribuerade_System_Labb_2.Controllers
         // GET: Messages/Create
         public IActionResult Create()
         {
+            SelectList list = new SelectList(_context.Users);
+            ViewBag.Users = list;
             return View();
         }
 
