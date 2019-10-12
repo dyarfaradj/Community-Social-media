@@ -26,7 +26,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         public async Task<IActionResult> Index()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            List<Message> messages = await _context.Messages.Where(message =>( message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id))).ToListAsync();
+            List<Message> messages = await _context.Messages.Where(message =>( (message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id)) && message.Read.Equals(false))).ToListAsync();
 
             return View(messages);
         }
@@ -46,10 +46,24 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
 
-            if(!IsItemByCurrentUser(message))
+            message.Read = true;
+            try
             {
-                return Unauthorized();
+                _context.Update(message);
+                await _context.SaveChangesAsync();
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MessageExists(message.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
 
             return View(message);
         }
@@ -160,6 +174,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 return NotFound();
             }
+            if (!IsItemByCurrentUser(message))
+            {
+                return Unauthorized();
+            }
+
 
             message.Deleted = true;
             try
