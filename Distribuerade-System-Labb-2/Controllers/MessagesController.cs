@@ -102,7 +102,7 @@ namespace Distribuerade_System_Labb_2.Controllers
                 _context.Add(message);
                 await _context.SaveChangesAsync();
                 //ViewBag.Message = "You clicked NO!";
-                TempData["ConfirmationMessage"] = "Meddelande nummer " + 3 +" avsänt till " + GetUserById(message.ReceiverId).UserName;
+                TempData["ConfirmationMessage"] = "Meddelande nummer " + currentUser.Messages.Last().Id + " avsänt till " + GetUserById(message.ReceiverId).UserName;
                 return RedirectToAction("Create");
             }
             return View(message);
