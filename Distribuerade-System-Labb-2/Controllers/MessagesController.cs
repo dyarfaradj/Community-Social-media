@@ -25,19 +25,23 @@ namespace Distribuerade_System_Labb_2.Controllers
         }
 
         // GET: Messages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> MessageOfUser(string id)
         {
+            if (id.Equals(null) || id.Equals(""))
+            {
+                return NotFound();
+            }
+
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             List<Message> messages = await _context.Messages.Where(message =>
-            ( (message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id)) 
-            && message.Deleted.Equals(false))).ToListAsync();
+            (message.ReceiverId.Equals(currentUser.Id) && message.Deleted.Equals(false) && message.User.Id.Equals(id))).ToListAsync();
             var messages2 = _context.Messages.ToList();
             int SumDeleted = 0;
             int SumRead = 0;
             int TotMessages = 0;
             foreach (Message m in messages2)
             {
-                if(IsUserMessage(m))
+                if(IsMessageForMe(m))
                 {
                     TotMessages++;
                     if (m.Deleted != false)
@@ -51,6 +55,32 @@ namespace Distribuerade_System_Labb_2.Controllers
             ViewBag.NoOfMessages = TotMessages;
             ViewBag.NoOfReadMessages = SumRead;
             return View(messages);
+        }
+        public async Task<IActionResult> Index()
+        {
+            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+            List<Message> messages = await _context.Messages.Where(message =>
+            ((message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id))
+            && message.Deleted.Equals(false))).ToListAsync();
+            int TotMessages = 0;
+            List<Distribuerade_System_Labb_2User> Us = await _context.Users.Where(u => (!u.Id.Equals(currentUser.Id))).ToListAsync();
+            List<Distribuerade_System_Labb_2User> users = new List<Distribuerade_System_Labb_2User>();
+
+            foreach (Message m in messages)
+            {
+                foreach (Distribuerade_System_Labb_2User u in Us)
+                {
+                    if (m.User.Id.Equals(u.Id) && !users.Contains(u))
+                    {
+                        users.Add(u);
+                        TotMessages++;
+                    }
+                }
+            }
+            
+
+            ViewBag.NoOfMessages = TotMessages;
+            return View(users);
         }
 
         // GET: Messages/Details/5
@@ -246,7 +276,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             return _context.Users.Find(id);
         }
 
-        private bool IsUserMessage(Message message)
+        private bool IsMessageForMe(Message message)
         {
             string currentUserId = _userManager.GetUserId(User);
             return message.ReceiverId.Equals(currentUserId);
