@@ -1,16 +1,47 @@
-﻿@model IEnumerable<Distribuerade_System_Labb_2.Areas.Identity.Data.Distribuerade_System_Labb_2User>
+﻿@model IEnumerable<Distribuerade_System_Labb_2.Models.MessageViewModel>
 
 @{
     ViewData["Title"] = "Your Messages";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h1>Your Messages</h1>
+<h1>Your Messages</h1>
 
 
-    <p>
-        <a asp-action="Create"><i class="fa fa-plus-circle"></i> Create New</a>
-    </p>
+<p>
+    <a asp-action="Create"><i class="fa fa-plus-circle"></i> Create New</a>
+</p>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SenderId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Body)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Read)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceiverId)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </td>
+    </tr>
+}
 <div class="container-fluid">
     @foreach (var item in Model)
     {
@@ -22,7 +53,7 @@
                             <div id="contact"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
                         </div>
                         <div class="col-md-2">
-                            @Html.DisplayFor(modelItem => item.UserName)
+                            @Html.DisplayFor(modelItem => item.Title)
                         </div>
                     </div>
                 </a>
@@ -32,5 +63,5 @@
 </div>
 
     Your total messages:
-    @ViewBag.NoOfMessages
+@ViewBag.NoOfMessages
 
