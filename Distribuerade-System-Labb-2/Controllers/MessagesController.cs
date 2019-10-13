@@ -260,7 +260,6 @@ namespace Distribuerade_System_Labb_2.Controllers
                     if (message.Deleted != false) //Tar bort personen själv i listan
                         SumDeleted++;
                 }
-
                 ViewBag.NoOfDeletedMessages = SumDeleted;
                 return RedirectToAction(nameof(Index));
             
