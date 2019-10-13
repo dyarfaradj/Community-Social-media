@@ -14,25 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.User.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Body)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Read)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deleted)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.SentDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReceiverId)
             </th>
             <th></th>
         </tr>
@@ -42,25 +27,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.User.Id)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Body)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Read)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Deleted)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.SentDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReceiverId)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -71,7 +41,9 @@
         }
     </tbody>
 </table>
-Unread messages:
-@ViewBag.NoOfUnReadMessages
+Yor total read messages:
+@ViewBag.NoOfReadMessages
+Yor total messages:
+@ViewBag.NoOfMessages
 Your total deleted messages:
 @ViewBag.NoOfDeletedMessages

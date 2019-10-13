@@ -33,20 +33,23 @@ namespace Distribuerade_System_Labb_2.Controllers
             && message.Deleted.Equals(false))).ToListAsync();
             var messages2 = _context.Messages.ToList();
             int SumDeleted = 0;
-            int SumUnRead = 0;
+            int SumRead = 0;
+            int TotMessages = 0;
             foreach (Message m in messages2)
             {
                 if(IsUserMessage(m))
                 {
+                    TotMessages++;
                     if (m.Deleted != false)
                         SumDeleted++;
-                    if ( m.Read == false && m.Deleted == false)
-                        SumUnRead++;
+                    if ( m.Read != false && m.Deleted == false)
+                        SumRead++;
                 }
             }
 
             ViewBag.NoOfDeletedMessages = SumDeleted;
-            ViewBag.NoOfUnReadMessages = SumUnRead;
+            ViewBag.NoOfMessages = TotMessages;
+            ViewBag.NoOfReadMessages = SumRead;
             return View(messages);
         }
 
@@ -193,10 +196,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 return NotFound();
             }
-            if(!IsUserMessage(message))
-            {
-                return NotFound();
-            }
+           
 
             message.Deleted = true;
             try
