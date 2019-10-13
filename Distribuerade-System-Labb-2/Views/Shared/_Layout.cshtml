@@ -40,7 +40,12 @@
                         </li>
                     </ul>
                 </div>
-                <partial name="_LoginPartial"/>
+                Last Login: 
+                @if (TempData["LastLogin"] != null)
+                {
+                     @TempData["LastLogin"]
+                }
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>

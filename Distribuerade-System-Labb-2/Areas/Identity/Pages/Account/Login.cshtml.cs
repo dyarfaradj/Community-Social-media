@@ -17,10 +17,12 @@ namespace Distribuerade_System_Labb_2.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<Distribuerade_System_Labb_2User> _signInManager;
+        private readonly UserManager<Distribuerade_System_Labb_2User> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<Distribuerade_System_Labb_2User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(UserManager<Distribuerade_System_Labb_2User> userManager, SignInManager<Distribuerade_System_Labb_2User> signInManager, ILogger<LoginModel> logger)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -77,6 +79,21 @@ namespace Distribuerade_System_Labb_2.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(Input.Email);
+                    string lastLogin = user.LastLoginDate.ToString("H:mm yyyy-MM-dd");
+                    TempData["LastLogin"] = lastLogin;
+                    if (user == null)
+                    {
+                        return NotFound("Unable to load user for update last login.");
+                    }
+                    user.LastLoginDate = DateTimeOffset.UtcNow;
+                    user.LoginPerMonth++;
+                    var lastLoginResult = await _userManager.UpdateAsync(user);
+                    if (!lastLoginResult.Succeeded)
+                    {
+                        throw new InvalidOperationException($"Unexpected error occurred setting the last login date" +
+                            $" ({lastLoginResult.ToString()}) for user with ID '{user.Id}'.");
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

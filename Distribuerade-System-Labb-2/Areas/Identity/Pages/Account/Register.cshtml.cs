@@ -68,6 +68,7 @@ namespace Distribuerade_System_Labb_2.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new Distribuerade_System_Labb_2User { UserName = Input.Email, Email = Input.Email };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
