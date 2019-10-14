@@ -30,15 +30,17 @@ namespace Distribuerade_System_Labb_2.Controllers
         // GET: Messages
         public async Task<IActionResult> MessageOfUser(string id)
         {
+            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+
             if (id.Equals(null) || id.Equals(""))
             {
                 return NotFound();
             }
 
             List<MessageViewModel> messages = await GetAllMessages(id);
-            int SumDeleted =  await messageLogic.HowManyMessageDeleted();
-            int SumRead = await messageLogic.HowManyMessagesRead();
-            int TotMessages = await messageLogic.HowManyMessages();
+            int SumDeleted =  await messageLogic.HowManyMessageDeleted(currentUser.Id);
+            int SumRead = await messageLogic.HowManyMessagesRead(currentUser.Id);
+            int TotMessages = await messageLogic.HowManyMessages(currentUser.Id);
             ViewBag.NoOfDeletedMessages = SumDeleted;
             ViewBag.NoOfMessages = TotMessages;
             ViewBag.NoOfReadMessages = SumRead;
