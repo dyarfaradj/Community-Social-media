@@ -35,23 +35,10 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
 
-            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             List<MessageViewModel> messages = await GetAllMessages();
-            int SumDeleted = 0;
-            int SumRead = 0;
-            int TotMessages = 0;
-            foreach (MessageViewModel m in messages)
-            {
-                if(IsMessageForMe(m))
-                {
-                    TotMessages++;
-                    if (m.Deleted != false)
-                        SumDeleted++;
-                    if ( m.Read != false && m.Deleted == false)
-                        SumRead++;
-                }
-            }
-
+            int SumDeleted =  await messageLogic.HowManyMessageDeleted();
+            int SumRead = await messageLogic.HowManyMessagesRead();
+            int TotMessages = await messageLogic.HowManyMessages();
             ViewBag.NoOfDeletedMessages = SumDeleted;
             ViewBag.NoOfMessages = TotMessages;
             ViewBag.NoOfReadMessages = SumRead;
@@ -91,32 +78,23 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 return NotFound();
             }
+            int messageId = id ?? default(int);
 
-            var message = await _context.Messages
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (message == null)
+            var m = await messageLogic.ReadMessage(messageId);
+            MessageViewModel currentMessage = new MessageViewModel
             {
-                return NotFound();
-            }
+                Id = m.Id,
+                Title = m.Title,
+                Body = m.Body,
+                Read = m.Read,
+                Deleted = m.Deleted,
+                SentDate = m.SentDate,
+                ReceiverId = m.ReceiverId,
+                SenderId = m.SenderId
+            };
 
-            message.Read = true;
-            try
-            {
-                _context.Update(message);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MessageExists(message.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return View(message);
+            return View(currentMessage);
+
         }
 
         // GET: Messages/Create
@@ -184,22 +162,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             int messageId = id ?? default(int);
 
             bool result = await messageLogic.DeleteMessage(messageId);
-
-            if (result == false)
-            {
-                return NotFound();
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        public async Task<IActionResult> Read(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            int messageId = id ?? default(int);
-
-            bool result = await messageLogic.ReadMessage(messageId);
 
             if (result == false)
             {

@@ -54,24 +54,19 @@ namespace BusinessLogic.MessageLogic
                 return false;
             }
         }
-        public async Task<Boolean> ReadMessage(int messageId)
+        public async Task<Message> ReadMessage(int messageId)
         {
             try
             {
-                var result = await _message.ReadMessage(messageId);
-                if (result)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                Message result = await _message.ReadMessage(messageId);
+                
+                    return result;
+                
             }
             catch (Exception error)
             {
                 Console.WriteLine(error);
-                return false;
+                return null;
             }
         }
 
@@ -84,7 +79,7 @@ namespace BusinessLogic.MessageLogic
                 Debug.WriteLine("mmmmmmmmmmmmmmmmmmmm: " + m.Title);
 
                 if (m.Deleted == false)
-                messagesList.Add(m);
+                    messagesList.Add(m);
             }
             foreach (Message m2 in messagesList)
             {
@@ -92,6 +87,39 @@ namespace BusinessLogic.MessageLogic
             }
 
             return messagesList;
+        }
+        public async Task<int> HowManyMessages()
+        {
+            List<Message> messages = await _message.GetAllMessages();
+            int total = 0;
+            foreach (Message m in messages)
+            {
+                if (m.Deleted == false)
+                    total++;
+            }
+            return total;
+        }
+        public async Task<int> HowManyMessageDeleted()
+        {
+            List<Message> messages = await _message.GetAllMessages();
+            int total = 0;
+            foreach (Message m in messages)
+            {
+                if (m.Deleted != false)
+                    total++;
+            }
+            return total;
+        }
+        public async Task<int> HowManyMessagesRead()
+        {
+            List<Message> messages = await _message.GetAllMessages();
+            int total = 0;
+            foreach (Message m in messages)
+            {
+                if (m.Deleted == false && m.Read !=false)
+                    total++;
+            }
+            return total;
         }
     }
 }
