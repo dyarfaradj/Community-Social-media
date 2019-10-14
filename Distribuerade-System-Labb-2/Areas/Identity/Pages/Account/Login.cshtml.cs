@@ -80,8 +80,6 @@ namespace Distribuerade_System_Labb_2.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(Input.Email);
-                    string lastLogin = user.LastLoginDate.ToString("H:mm yyyy-MM-dd");
-                    TempData["LastLogin"] = lastLogin;
                     if (user == null)
                     {
                         return NotFound("Unable to load user for update last login.");
