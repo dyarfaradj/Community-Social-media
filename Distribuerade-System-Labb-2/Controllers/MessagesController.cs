@@ -35,7 +35,7 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
 
-            List<MessageViewModel> messages = await GetAllMessages();
+            List<MessageViewModel> messages = await GetAllMessages(id);
             int SumDeleted =  await messageLogic.HowManyMessageDeleted();
             int SumRead = await messageLogic.HowManyMessagesRead();
             int TotMessages = await messageLogic.HowManyMessages();
@@ -201,6 +201,31 @@ namespace Distribuerade_System_Labb_2.Controllers
         {
             List<MessageViewModel> messageList = new List<MessageViewModel>();
             var messages = await messageLogic.GetAllMessages();
+            if (messages.Count > 0)
+            {
+                foreach (var m in messages)
+                {
+                    Debug.WriteLine("m2.Title: " + m.Title);
+                    MessageViewModel currentMessage = new MessageViewModel
+                    {
+                        Id = m.Id,
+                        Title = m.Title,
+                        Body = m.Body,
+                        Read = m.Read,
+                        Deleted = m.Deleted,
+                        SentDate = m.SentDate,
+                        ReceiverId = m.ReceiverId,
+                        SenderId = m.SenderId
+                    };
+                    messageList.Add(currentMessage);
+                }
+            }
+            return messageList;
+        }
+        private async Task<List<MessageViewModel>> GetAllMessages(String Id)
+        {
+            List<MessageViewModel> messageList = new List<MessageViewModel>();
+            var messages = await messageLogic.GetAllMessages(Id);
             if (messages.Count > 0)
             {
                 foreach (var m in messages)
