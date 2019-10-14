@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Distribuerade_System_Labb_2.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using BusinessLogic.MessageLogic;
+using System.Diagnostics;
+
 namespace Distribuerade_System_Labb_2.Controllers
 {
     [Authorize]
@@ -34,13 +36,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             }
 
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            List<Message> messages = await _context.Messages.Where(message =>
-            (message.ReceiverId.Equals(currentUser.Id) && message.Deleted.Equals(false) && message.User.Id.Equals(id))).ToListAsync();
-            var messages2 = _context.Messages.ToList();
+            List<MessageViewModel> messages = await GetAllMessages();
             int SumDeleted = 0;
             int SumRead = 0;
             int TotMessages = 0;
-            foreach (Message m in messages2)
+            foreach (MessageViewModel m in messages)
             {
                 if(IsMessageForMe(m))
                 {
@@ -59,51 +59,27 @@ namespace Distribuerade_System_Labb_2.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<MessageViewModel> messageList= new List<MessageViewModel>();
-            var messages = await messageLogic.GetAllMessages();
-            if (messages.Count>0)
-            {
-                foreach(var m in messages)
-                {
-                    MessageViewModel currentMessage = new MessageViewModel
-                    {
-                        Title = m.Title,
-                        Body = m.Body,
-                        Read = m.Read,
-                        Deleted = m.Deleted,
-                        SentDate = m.SentDate,
-                        ReceiverId = m.ReceiverId,
-                        SenderId = m.SenderId
-                    };
-                    messageList.Add(currentMessage);
-                }
-            }
-            return View(messageList);
-        }
-
-        public async Task<IActionResult> Index2()
-        {
+            List<MessageViewModel> messageList = await GetAllMessages();
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            List<Message> messages = await _context.Messages.Where(message =>
-            ((message.User.Equals(currentUser) || message.ReceiverId.Equals(currentUser.Id))
-            && message.Deleted.Equals(false))).ToListAsync();
-            int TotMessages = 0;
             List<Distribuerade_System_Labb_2User> Us = await _context.Users.Where(u => (!u.Id.Equals(currentUser.Id))).ToListAsync();
             List<Distribuerade_System_Labb_2User> users = new List<Distribuerade_System_Labb_2User>();
+            int TotMessages = 0;
 
-            foreach (Message m in messages)
+            foreach (var m in messageList)
             {
+                Debug.WriteLine("m.Title: " + m.Title);
                 foreach (Distribuerade_System_Labb_2User u in Us)
                 {
-                    if (m.User.Id.Equals(u.Id) && !users.Contains(u))
+                    var mUserID = GetUserById(m.SenderId);
+                    Debug.WriteLine("m.SenderId: " + m.SenderId);
+                    Debug.WriteLine("mUserID: " + mUserID);
+                    if (mUserID.Id.Equals(u.Id) && !users.Contains(u))
                     {
                         users.Add(u);
                         TotMessages++;
                     }
                 }
             }
-            
-
             ViewBag.NoOfMessages = TotMessages;
             return View(users);
         }
@@ -198,58 +174,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(message);
         }
 
-
-        // GET: Messages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var message = await _context.Messages.FindAsync(id);
-            if (message == null)
-            {
-                return NotFound();
-            }
-            return View(message);
-        }
-
-        // POST: Messages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Body,Read,Deleted,SentDate,ReceiverId")] Message message)
-        {
-            if (id != message.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(message);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MessageExists(message.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(message);
-        }
-
         // GET: Messages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -314,7 +238,34 @@ namespace Distribuerade_System_Labb_2.Controllers
             return _context.Users.Find(id);
         }
 
-        private bool IsMessageForMe(Message message)
+        private async Task<List<MessageViewModel>> GetAllMessages()
+        {
+            List<MessageViewModel> messageList = new List<MessageViewModel>();
+            var messages = await messageLogic.GetAllMessages();
+            if (messages.Count > 0)
+            {
+                foreach (var m in messages)
+                {
+                    Debug.WriteLine("m2.Title: " + m.SenderId);
+                    MessageViewModel currentMessage = new MessageViewModel
+                    {
+                        Id = m.Id,
+                        Title = m.Title,
+                        Body = m.Body,
+                        Read = m.Read,
+                        Deleted = m.Deleted,
+                        SentDate = m.SentDate,
+                        ReceiverId = m.ReceiverId,
+                        SenderId = m.SenderId
+                    };
+                    messageList.Add(currentMessage);
+                }
+            }
+            return messageList;
+        }
+
+
+        private bool IsMessageForMe(MessageViewModel message)
         {
             string currentUserId = _userManager.GetUserId(User);
             return message.ReceiverId.Equals(currentUserId);

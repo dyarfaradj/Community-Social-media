@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Distribuerade_System_Labb_2.Migrations
 {
     [DbContext(typeof(Distribuerade_System_Labb_2Context))]
-    [Migration("20191011215028_Message_ad")]
-    partial class Message_ad
+    [Migration("20191014102802_2")]
+    partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,9 +36,13 @@ namespace Distribuerade_System_Labb_2.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<DateTimeOffset>("LastLoginDate");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<int>("LoginPerMonth");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -70,6 +74,35 @@ namespace Distribuerade_System_Labb_2.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Distribuerade_System_Labb_2.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .IsRequired();
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<bool>("Read");
+
+                    b.Property<string>("ReceiverId");
+
+                    b.Property<DateTime>("SentDate");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -184,6 +217,13 @@ namespace Distribuerade_System_Labb_2.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Distribuerade_System_Labb_2.Models.Message", b =>
+                {
+                    b.HasOne("Distribuerade_System_Labb_2.Areas.Identity.Data.Distribuerade_System_Labb_2User", "User")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

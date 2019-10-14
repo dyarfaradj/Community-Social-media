@@ -34,7 +34,7 @@ namespace Distribuerade_System_Labb_2
             });
 
             services.AddDbContext<Distribuerade_System_Labb_2Context>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("Distribuerade_System_Labb_2ContextConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("DB_Labb2_LoginContextConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
