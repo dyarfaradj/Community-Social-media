@@ -9,13 +9,12 @@ using Distribuerade_System_Labb_2.Models;
 using Microsoft.AspNetCore.Identity;
 using Distribuerade_System_Labb_2.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
-using BusinessLogic.MessageLogic;
+
 namespace Distribuerade_System_Labb_2.Controllers
 {
     [Authorize]
     public class MessagesController : Controller
     {
-        private readonly MessageLogic messageLogic = new MessageLogic();
         private readonly Distribuerade_System_Labb_2Context _context;
         private readonly UserManager<Distribuerade_System_Labb_2User> _userManager;
 
@@ -58,30 +57,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(messages);
         }
         public async Task<IActionResult> Index()
-        {
-            List<MessageViewModel> messageList= new List<MessageViewModel>();
-            var messages = await messageLogic.GetAllMessages();
-            if (messages.Count>0)
-            {
-                foreach(var m in messages)
-                {
-                    MessageViewModel currentMessage = new MessageViewModel
-                    {
-                        Title = m.Title,
-                        Body = m.Body,
-                        Read = m.Read,
-                        Deleted = m.Deleted,
-                        SentDate = m.SentDate,
-                        ReceiverId = m.ReceiverId,
-                        SenderId = m.SenderId
-                    };
-                    messageList.Add(currentMessage);
-                }
-            }
-            return View(messageList);
-        }
-
-        public async Task<IActionResult> Index2()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             List<Message> messages = await _context.Messages.Where(message =>
@@ -140,6 +115,8 @@ namespace Distribuerade_System_Labb_2.Controllers
                     throw;
                 }
             }
+
+
             return View(message);
         }
 
@@ -170,34 +147,18 @@ namespace Distribuerade_System_Labb_2.Controllers
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
-                bool result = await messageLogic.CreateNewMessage(message.Title, message.Body, message.ReceiverId, currentUser.Id);
-               // TempData["ConfirmationMessage"] = "Meddelande nummer " + currentUser.Messages.Last().Id + " avsänt till " 
-                //    + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("H:mm yyyy-MM-dd");
-                return RedirectToAction("Create");
-            }
-            return View(message);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create2([Bind("Title,Body,ReceiverId")] Message message)
-        {
-            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            if (ModelState.IsValid)
-            {
                 message.Deleted = false;
                 message.Read = false;
                 message.SentDate = DateTime.Now;
                 message.User = currentUser;
                 _context.Add(message);
                 await _context.SaveChangesAsync();
-                TempData["ConfirmationMessage"] = "Meddelande nummer " + currentUser.Messages.Last().Id + " avsänt till "
+                TempData["ConfirmationMessage"] = "Meddelande nummer " + currentUser.Messages.Last().Id + " avsänt till " 
                     + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("H:mm yyyy-MM-dd");
                 return RedirectToAction("Create");
             }
             return View(message);
         }
-
 
         // GET: Messages/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -292,7 +253,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-                var messages =  _context.Messages.ToList();
+                var messages = _context.Messages.ToList();
                 int SumDeleted = 0;
                 foreach (Message message in messages)
                 {
