@@ -51,6 +51,23 @@ namespace DataAcces.Functions
                 return false;
             }
         }
+        public async Task<Boolean> ReadMessage(int messageId)
+        {
+            var context = new DatabaseContext(DatabaseContext.ops.dbOptions);
+            Message currentMessage = await context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
+            currentMessage.Read = true;
+            try
+            {
+                context.Update(currentMessage);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Debug.WriteLine("Message not found");
+                return false;
+            }
+        }
 
         public async Task<List<Message>> GetAllMessages()
         {

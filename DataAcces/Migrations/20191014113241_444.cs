@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAcces.Migrations
 {
-    public partial class initstart : Migration
+    public partial class _444 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -167,6 +167,7 @@ namespace DataAcces.Migrations
                     Deleted = table.Column<bool>(nullable: false),
                     SentDate = table.Column<DateTime>(nullable: false),
                     ReceiverId = table.Column<string>(nullable: true),
+                    SenderId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

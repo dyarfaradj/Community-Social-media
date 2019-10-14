@@ -217,7 +217,7 @@ namespace DataAcces.Migrations
 
             modelBuilder.Entity("DataAcces.Entities.Message", b =>
                 {
-                    b.HasOne("DataAcces.Entities.User", "User")
+                    b.HasOne("DataAcces.Entities.User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId");
                 });

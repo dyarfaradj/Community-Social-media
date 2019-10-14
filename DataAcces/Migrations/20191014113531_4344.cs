@@ -2,7 +2,7 @@
 
 namespace DataAcces.Migrations
 {
-    public partial class fix : Migration
+    public partial class _4344 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

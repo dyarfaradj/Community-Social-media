@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAcces.Interfaces;
 using DataAcces.Entities;
+using System.Diagnostics;
 
 namespace BusinessLogic.MessageLogic
 {
@@ -53,11 +54,45 @@ namespace BusinessLogic.MessageLogic
                 return false;
             }
         }
+        public async Task<Boolean> ReadMessage(int messageId)
+        {
+            try
+            {
+                var result = await _message.ReadMessage(messageId);
+                if (result)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+                return false;
+            }
+        }
 
         public async Task<List<Message>> GetAllMessages()
         {
             List<Message> messages = await _message.GetAllMessages();
-            return messages;
+            List<Message> messagesList = new List<Message>();
+            foreach (Message m in messages)
+            {
+                Debug.WriteLine("mmmmmmmmmmmmmmmmmmmm: " + m.Title);
+
+                if (m.Deleted == false)
+                messagesList.Add(m);
+            }
+            foreach (Message m2 in messagesList)
+            {
+                Debug.WriteLine("11111: " + m2.Title);
+            }
+
+            return messagesList;
         }
     }
 }
+ 

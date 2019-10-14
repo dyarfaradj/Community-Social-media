@@ -10,6 +10,7 @@ namespace DataAcces.Interfaces
     {
         Task<Message> AddMessage(string title, string body, string receiverId, string currentUserId);
         Task<Boolean> DeleteMessage(int messageId);
+        Task<Boolean> ReadMessage(int messageId);
         Task<List<Message>> GetAllMessages();
     }
 }

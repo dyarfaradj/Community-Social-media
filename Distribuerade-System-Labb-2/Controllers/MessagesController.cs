@@ -184,12 +184,28 @@ namespace Distribuerade_System_Labb_2.Controllers
             int messageId = id ?? default(int);
 
             bool result = await messageLogic.DeleteMessage(messageId);
-           
+
             if (result == false)
             {
                 return NotFound();
             }
-            return RedirectToAction(nameof(Index));            
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Read(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            int messageId = id ?? default(int);
+
+            bool result = await messageLogic.ReadMessage(messageId);
+
+            if (result == false)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Messages/Delete/5
@@ -227,7 +243,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 foreach (var m in messages)
                 {
-                    Debug.WriteLine("m2.Title: " + m.SenderId);
+                    Debug.WriteLine("m2.Title: " + m.Title);
                     MessageViewModel currentMessage = new MessageViewModel
                     {
                         Id = m.Id,

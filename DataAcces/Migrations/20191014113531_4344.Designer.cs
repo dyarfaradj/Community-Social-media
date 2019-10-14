@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAcces.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191013195348_initstart")]
-    partial class initstart
+    [Migration("20191014113531_4344")]
+    partial class _4344
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,8 @@ namespace DataAcces.Migrations
                     b.Property<bool>("Read");
 
                     b.Property<string>("ReceiverId");
+
+                    b.Property<string>("SenderId");
 
                     b.Property<DateTime>("SentDate");
 
@@ -217,7 +219,7 @@ namespace DataAcces.Migrations
 
             modelBuilder.Entity("DataAcces.Entities.Message", b =>
                 {
-                    b.HasOne("DataAcces.Entities.User", "User")
+                    b.HasOne("DataAcces.Entities.User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId");
                 });
