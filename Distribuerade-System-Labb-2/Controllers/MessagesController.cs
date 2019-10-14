@@ -48,24 +48,21 @@ namespace Distribuerade_System_Labb_2.Controllers
         {
             List<MessageViewModel> messageList = await GetAllMessages();
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            List<Distribuerade_System_Labb_2User> Us = await _context.Users.Where(u => (!u.Id.Equals(currentUser.Id))).ToListAsync();
             List<Distribuerade_System_Labb_2User> users = new List<Distribuerade_System_Labb_2User>();
             int TotMessages = 0;
 
             foreach (var m in messageList)
             {
-                Debug.WriteLine("m.Title: " + m.Title);
-                foreach (Distribuerade_System_Labb_2User u in Us)
-                {
                     var mUserID = GetUserById(m.SenderId);
-                    Debug.WriteLine("m.SenderId: " + m.SenderId);
-                    Debug.WriteLine("mUserID: " + mUserID);
-                    if (mUserID.Id.Equals(u.Id) && !users.Contains(u))
+                    if (m.ReceiverId.Equals(currentUser.Id))
                     {
-                        users.Add(u);
-                        TotMessages++;
+                        var user = GetUserById(m.SenderId);
+                        if(!users.Contains(user))
+                        {
+                            users.Add(user);
+                            TotMessages++;
+                        }
                     }
-                }
             }
             ViewBag.NoOfMessages = TotMessages;
             return View(users);
