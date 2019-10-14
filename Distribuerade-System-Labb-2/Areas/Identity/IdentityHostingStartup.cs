@@ -1,4 +1,6 @@
 ﻿using System;
+using DataAcces.DataContext;
+using DataAcces.Entities;
 using Distribuerade_System_Labb_2.Areas.Identity.Data;
 using Distribuerade_System_Labb_2.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -16,8 +18,8 @@ namespace Distribuerade_System_Labb_2.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDefaultIdentity<Distribuerade_System_Labb_2User>()
-                    .AddEntityFrameworkStores<Distribuerade_System_Labb_2Context>();
+                services.AddDefaultIdentity<User>()
+                    .AddEntityFrameworkStores<DatabaseContext>();
             });
         }
     }

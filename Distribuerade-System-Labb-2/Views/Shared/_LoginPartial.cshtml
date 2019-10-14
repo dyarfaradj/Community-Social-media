@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Distribuerade_System_Labb_2.Areas.Identity.Data
-@inject SignInManager<Distribuerade_System_Labb_2User> SignInManager
-@inject UserManager<Distribuerade_System_Labb_2User> UserManager
+@using DataAcces.Entities;
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

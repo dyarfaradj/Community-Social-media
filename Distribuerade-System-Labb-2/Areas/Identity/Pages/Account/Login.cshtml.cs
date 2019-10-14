@@ -10,17 +10,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
+using Distribuerade_System_Labb_2.Models;
+using DataAcces.Entities;
 namespace Distribuerade_System_Labb_2.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<Distribuerade_System_Labb_2User> _signInManager;
-        private readonly UserManager<Distribuerade_System_Labb_2User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(UserManager<Distribuerade_System_Labb_2User> userManager, SignInManager<Distribuerade_System_Labb_2User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<LoginModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;

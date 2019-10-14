@@ -4,10 +4,11 @@ using System.Text;
 using DataAcces.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataAcces.DataContext
 {
-    public class DatabaseContext: IdentityDbContext<User>
+    public class DatabaseContext: IdentityDbContext<IdentityUser>
     {
         public class OptionsBuild
         {
@@ -34,5 +35,6 @@ namespace DataAcces.DataContext
         }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
