@@ -104,7 +104,7 @@ namespace BusinessLogic.MessageLogic
 
             return messagesList;
         }
-        public async Task<int> HowManyMessages()
+        public async Task<int> HowManyMessages(String Id)
         {
             List<Message> messages = await _message.GetAllMessages();
             int total = 0;
@@ -115,18 +115,19 @@ namespace BusinessLogic.MessageLogic
             }
             return total;
         }
-        public async Task<int> HowManyMessageDeleted()
+        public async Task<int> HowManyMessageDeleted(String Id)
         {
             List<Message> messages = await _message.GetAllMessages();
             int total = 0;
             foreach (Message m in messages)
             {
-                if (m.Deleted != false)
+                if (m.ReceiverId.Equals(Id))
+                    if (m.Deleted != false)
                     total++;
             }
             return total;
         }
-        public async Task<int> HowManyMessagesRead()
+        public async Task<int> HowManyMessagesRead(String Id)
         {
             List<Message> messages = await _message.GetAllMessages();
             int total = 0;
