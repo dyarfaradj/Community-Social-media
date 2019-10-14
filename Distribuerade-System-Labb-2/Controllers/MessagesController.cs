@@ -115,34 +115,14 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverId")] Message message)
+        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverId")] MessageViewModel message)
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
-                bool result = await messageLogic.CreateNewMessage(message.Title, message.Body, message.ReceiverId, currentUser.Id);
-               // TempData["ConfirmationMessage"] = "Meddelande nummer " + currentUser.Messages.Last().Id + " avsänt till " 
-                //    + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("H:mm yyyy-MM-dd");
-                return RedirectToAction("Create");
-            }
-            return View(message);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create2([Bind("Title,Body,ReceiverId")] Message message)
-        {
-            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            if (ModelState.IsValid)
-            {
-                message.Deleted = false;
-                message.Read = false;
-                message.SentDate = DateTime.Now;
-                message.User = currentUser;
-                _context.Add(message);
-                await _context.SaveChangesAsync();
-                TempData["ConfirmationMessage"] = "Meddelande nummer " + currentUser.Messages.Last().Id + " avsänt till "
-                    + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("H:mm yyyy-MM-dd");
+                int result = await messageLogic.CreateNewMessage(message.Title, message.Body, message.ReceiverId, currentUser.Id);
+                TempData["ConfirmationMessage"] = "Meddelande nummer " + result + " avsänt till " 
+                   + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
                 return RedirectToAction("Create");
             }
             return View(message);
@@ -164,23 +144,6 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        // POST: Messages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-                var messages =  _context.Messages.ToList();
-                int SumDeleted = 0;
-                foreach (Message message in messages)
-                {
-                    if (message.Deleted != false) //Tar bort personen själv i listan
-                        SumDeleted++;
-                }
-                ViewBag.NoOfDeletedMessages = SumDeleted;
-                return RedirectToAction(nameof(Index));
-            
         }
 
         private bool MessageExists(int id)

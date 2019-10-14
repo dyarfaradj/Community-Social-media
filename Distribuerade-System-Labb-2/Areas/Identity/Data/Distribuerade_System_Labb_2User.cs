@@ -12,6 +12,6 @@ namespace Distribuerade_System_Labb_2.Areas.Identity.Data
     {
         public int LoginPerMonth { get; set; }
         public DateTimeOffset LastLoginDate { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<MessageViewModel> Messages { get; set; }
     }
 }

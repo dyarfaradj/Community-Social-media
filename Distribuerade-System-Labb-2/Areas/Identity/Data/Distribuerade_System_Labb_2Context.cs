@@ -24,6 +24,6 @@ namespace Distribuerade_System_Labb_2.Models
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageViewModel> Messages { get; set; }
     }
 }

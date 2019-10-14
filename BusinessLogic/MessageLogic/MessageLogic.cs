@@ -13,24 +13,24 @@ namespace BusinessLogic.MessageLogic
         private readonly IMessage _message = new DataAcces.Functions.MessageFunctions();
 
 
-        public async Task<Boolean> CreateNewMessage(string title, string body, string receiverId, string currentUserId)
+        public async Task<int> CreateNewMessage(string title, string body, string receiverId, string currentUserId)
         {
             try
             {
                 var result = await _message.AddMessage(title, body, receiverId, currentUserId);
                 if(result.Id >0)
                 { 
-                    return true;
+                    return result.Id;
                 }
                 else
                 {
-                    return false;
+                    return 0;
                 }
             }
             catch(Exception error)
             {
                 Console.WriteLine(error);
-                return false;
+                return 0;
             }
         }
 
@@ -76,14 +76,8 @@ namespace BusinessLogic.MessageLogic
             List<Message> messagesList = new List<Message>();
             foreach (Message m in messages)
             {
-                Debug.WriteLine("mmmmmmmmmmmmmmmmmmmm: " + m.Title);
-
                 if (m.Deleted == false)
                     messagesList.Add(m);
-            }
-            foreach (Message m2 in messagesList)
-            {
-                Debug.WriteLine("11111: " + m2.Title);
             }
 
             return messagesList;
@@ -96,10 +90,6 @@ namespace BusinessLogic.MessageLogic
             {
                 if (m.Deleted == false && m.SenderId == Id)
                     messagesList.Add(m);
-            }
-            foreach (Message m2 in messagesList)
-            {
-                Debug.WriteLine("11111: " + m2.Title);
             }
 
             return messagesList;

@@ -84,7 +84,7 @@ namespace Distribuerade_System_Labb_2.Areas.Identity.Pages.Account
                     {
                         return NotFound("Unable to load user for update last login.");
                     }
-                    user.LastLoginDate = DateTimeOffset.UtcNow;
+                    user.LastLoginDate = DateTime.Now;
                     user.LoginPerMonth++;
                     var lastLoginResult = await _userManager.UpdateAsync(user);
                     if (!lastLoginResult.Succeeded)
