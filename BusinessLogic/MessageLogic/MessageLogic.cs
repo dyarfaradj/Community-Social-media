@@ -110,7 +110,8 @@ namespace BusinessLogic.MessageLogic
             int total = 0;
             foreach (Message m in messages)
             {
-                if (m.Deleted == false)
+                if (m.ReceiverId.Equals(Id))
+                    if (m.Deleted == false)
                     total++;
             }
             return total;
@@ -133,7 +134,8 @@ namespace BusinessLogic.MessageLogic
             int total = 0;
             foreach (Message m in messages)
             {
-                if (m.Deleted == false && m.Read !=false)
+                if (m.ReceiverId.Equals(Id))
+                    if (m.Deleted == false && m.Read !=false)
                     total++;
             }
             return total;
