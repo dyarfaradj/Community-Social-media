@@ -9,6 +9,7 @@ namespace DataAcces.Interfaces
     public interface IMessage
     {
         Task<Message> AddMessage(string title, string body, string receiverId, string currentUserId);
+        Task<Boolean> DeleteMessage(int messageId);
         Task<List<Message>> GetAllMessages();
     }
 }

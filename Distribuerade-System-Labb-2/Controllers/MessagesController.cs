@@ -181,32 +181,13 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 return NotFound();
             }
+            int messageId = id ?? default(int);
 
-            var message = await _context.Messages
-                .FirstOrDefaultAsync(m => m.Id == id);
+            bool result = await messageLogic.DeleteMessage(messageId);
            
-            if (message == null)
+            if (result == false)
             {
                 return NotFound();
-            }
-           
-
-            message.Deleted = true;
-            try
-            {
-                _context.Update(message);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MessageExists(message.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
             return RedirectToAction(nameof(Index));            
         }
@@ -271,10 +252,10 @@ namespace Distribuerade_System_Labb_2.Controllers
             return message.ReceiverId.Equals(currentUserId);
         }
 
-        private bool IsItemByCurrentUser(Message message)
+        private bool IsItemByCurrentUser(MessageViewModel message)
         {
             string currentUserId = _userManager.GetUserId(User);
-            return message.User.Id.Equals(currentUserId);
+            return message.SenderId.Equals(currentUserId);
         }
     }
 }

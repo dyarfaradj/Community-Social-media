@@ -4,6 +4,7 @@ using DataAcces.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,24 @@ namespace DataAcces.Functions
                 await context.SaveChangesAsync();
             }
             return newMessage;
+        }
+
+        public async Task<Boolean> DeleteMessage(int messageId)
+        {
+            var context = new DatabaseContext(DatabaseContext.ops.dbOptions);
+            Message currentMessage = await context.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
+            currentMessage.Deleted = true;
+            try
+            {
+                context.Update(currentMessage);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Debug.WriteLine("Message not found");
+                return false;
+            }
         }
 
         public async Task<List<Message>> GetAllMessages()

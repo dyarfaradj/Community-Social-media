@@ -33,6 +33,27 @@ namespace BusinessLogic.MessageLogic
             }
         }
 
+        public async Task<Boolean> DeleteMessage(int messageId)
+        {
+            try
+            {
+                var result = await _message.DeleteMessage(messageId);
+                if (result)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+                return false;
+            }
+        }
+
         public async Task<List<Message>> GetAllMessages()
         {
             List<Message> messages = await _message.GetAllMessages();
