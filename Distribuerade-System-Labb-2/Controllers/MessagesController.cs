@@ -38,12 +38,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             }
 
             List<MessageViewModel> messages = await GetAllMessages(id);
-            int SumDeleted =  await messageLogic.HowManyMessageDeleted(currentUser.Id);
-            int SumRead = await messageLogic.HowManyMessagesRead(currentUser.Id);
-            int TotMessages = await messageLogic.HowManyMessages(currentUser.Id);
-            ViewBag.NoOfDeletedMessages = SumDeleted;
-            ViewBag.NoOfMessages = TotMessages;
-            ViewBag.NoOfReadMessages = SumRead;
             return View(messages);
         }
         public async Task<IActionResult> Index()
@@ -51,7 +45,9 @@ namespace Distribuerade_System_Labb_2.Controllers
             List<MessageViewModel> messageList = await GetAllMessages();
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             List<Distribuerade_System_Labb_2User> users = new List<Distribuerade_System_Labb_2User>();
-            int TotMessages = 0;
+            int SumDeleted = await messageLogic.HowManyMessageDeleted(currentUser.Id);
+            int SumRead = await messageLogic.HowManyMessagesRead(currentUser.Id);
+            int TotMessages = await messageLogic.HowManyMessages(currentUser.Id);
 
             foreach (var m in messageList)
             {
@@ -62,11 +58,12 @@ namespace Distribuerade_System_Labb_2.Controllers
                         if(!users.Contains(user))
                         {
                             users.Add(user);
-                            TotMessages++;
                         }
                     }
             }
+            ViewBag.NoOfDeletedMessages = SumDeleted;
             ViewBag.NoOfMessages = TotMessages;
+            ViewBag.NoOfReadMessages = SumRead;
             return View(users);
         }
 
