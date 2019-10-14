@@ -51,7 +51,6 @@ namespace Distribuerade_System_Labb_2.Controllers
 
             foreach (var m in messageList)
             {
-                    var mUserID = GetUserById(m.SenderId);
                     if (m.ReceiverId.Equals(currentUser.Id))
                     {
                         var user = GetUserById(m.SenderId);
