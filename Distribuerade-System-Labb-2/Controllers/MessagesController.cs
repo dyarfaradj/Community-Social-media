@@ -42,8 +42,8 @@ namespace Distribuerade_System_Labb_2.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<MessageViewModel> messageList = await GetAllMessages();
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+            List<MessageViewModel> messageList = await GetAllMessagesTo(currentUser.Id);
             List<Distribuerade_System_Labb_2User> users = new List<Distribuerade_System_Labb_2User>();
             int SumDeleted = await messageLogic.HowManyMessageDeleted(currentUser.Id);
             int SumRead = await messageLogic.HowManyMessagesRead(currentUser.Id);
@@ -51,14 +51,11 @@ namespace Distribuerade_System_Labb_2.Controllers
 
             foreach (var m in messageList)
             {
-                    if (m.ReceiverId.Equals(currentUser.Id))
-                    {
-                        var user = GetUserById(m.SenderId);
-                        if(!users.Contains(user))
-                        {
-                            users.Add(user);
-                        }
-                    }
+                var user = GetUserById(m.SenderId);
+                if(!users.Contains(user))
+                {
+                    users.Add(user);
+                }
             }
             ViewBag.NoOfDeletedMessages = SumDeleted;
             ViewBag.NoOfMessages = TotMessages;
@@ -188,7 +185,31 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 foreach (var m in messages)
                 {
-                    Debug.WriteLine("m2.Title: " + m.Title);
+                    MessageViewModel currentMessage = new MessageViewModel
+                    {
+                        Id = m.Id,
+                        Title = m.Title,
+                        Body = m.Body,
+                        Read = m.Read,
+                        Deleted = m.Deleted,
+                        SentDate = m.SentDate,
+                        ReceiverId = m.ReceiverId,
+                        SenderId = m.SenderId
+                    };
+                    messageList.Add(currentMessage);
+                }
+            }
+            return messageList;
+        }
+
+        private async Task<List<MessageViewModel>> GetAllMessagesTo(String Id)
+        {
+            List<MessageViewModel> messageList = new List<MessageViewModel>();
+            var messages = await messageLogic.GetAllMessagesTo(Id);
+            if (messages.Count > 0)
+            {
+                foreach (var m in messages)
+                {
                     MessageViewModel currentMessage = new MessageViewModel
                     {
                         Id = m.Id,

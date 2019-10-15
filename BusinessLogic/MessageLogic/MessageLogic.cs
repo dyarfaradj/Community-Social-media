@@ -94,6 +94,20 @@ namespace BusinessLogic.MessageLogic
 
             return messagesList;
         }
+
+        public async Task<List<Message>> GetAllMessagesTo(String Id)
+        {
+            List<Message> messages = await _message.GetAllMessages();
+            List<Message> messagesList = new List<Message>();
+            foreach (Message m in messages)
+            {
+                if (m.Deleted == false && m.ReceiverId == Id)
+                    messagesList.Add(m);
+            }
+
+            return messagesList;
+        }
+
         public async Task<int> HowManyMessages(String Id)
         {
             List<Message> messages = await _message.GetAllMessages();
