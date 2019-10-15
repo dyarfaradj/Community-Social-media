@@ -37,7 +37,7 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
 
-            List<MessageViewModel> messages = await GetAllMessages(id);
+            List<MessageViewModel> messages = await GetAllMessagesFrom(id, currentUser.Id);
             return View(messages);
         }
         public async Task<IActionResult> Index()
@@ -177,10 +177,10 @@ namespace Distribuerade_System_Labb_2.Controllers
             }
             return messageList;
         }
-        private async Task<List<MessageViewModel>> GetAllMessages(String Id)
+        private async Task<List<MessageViewModel>> GetAllMessagesFrom(String senderId, String receiverID)
         {
             List<MessageViewModel> messageList = new List<MessageViewModel>();
-            var messages = await messageLogic.GetAllMessages(Id);
+            var messages = await messageLogic.GetAllMessagesFrom(senderId, receiverID);
             if (messages.Count > 0)
             {
                 foreach (var m in messages)
