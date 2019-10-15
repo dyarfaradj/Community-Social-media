@@ -55,6 +55,42 @@ namespace BusinessLogic.GroupLogic
             }
         }
 
+        public async Task<List<Group>> GetAllMyOwnedGroups(string userId)
+        {
+            List<Group> groups = await _group.GetAllGroups();
+            List<Group> groupsList = new List<Group>();
+            foreach (Group g in groups)
+            {
+                if (g.OwnerId == userId)
+                    groupsList.Add(g);
+            }
+            return groupsList;
+        }
+
+        public async Task<List<Group>> GetAllMyJoinedGroup(string userId)
+        {
+            List<Member> members = await _group.GetAllMembers();
+            List<Group> groupsList = new List<Group>();
+            foreach (Member m in members)
+            {
+                if (m.UserId == userId)
+                    groupsList.Add(await _group.GetGroup(m.GroupId));
+            }
+            return groupsList;
+        }
+
+        public async Task<List<Member>> GetAllMembersOfGroup(int groupId)
+        {
+            List<Member> members = await _group.GetAllMembers();
+            List<Member> memberList = new List<Member>();
+            foreach (Member m in members)
+            {
+                if (m.GroupId == groupId)
+                    memberList.Add(m);
+            }
+            return memberList;
+        }
+
 
         public async Task<List<Group>> GetAllGroups(string userId)
         {

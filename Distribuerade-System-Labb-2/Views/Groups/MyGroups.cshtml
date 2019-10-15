@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Distribuerade_System_Labb_2.Models.GroupViewModel>
+
+@{
+    ViewData["Title"] = "MyGroups";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="MyGroups">MyGroups</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerId)
+                </td>
+                <td>
+                    <a asp-action="SendGroupMessage" asp-route-id="@item.Id">Send a message</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

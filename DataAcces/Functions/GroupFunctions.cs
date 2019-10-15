@@ -50,48 +50,22 @@ namespace DataAcces.Functions
                 return true;
             }
             return false;
-
-
-            ////Getting the group
-            //Group currentGroup = await context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
-
-            ////Creating a groupmember and saving
-            //if(CreateGroupMember(userId))
-            //{
-            //    //Add groupMember to group
-            //    using (context)
-            //    {
-            //        //currentGroup.MemberIds.Add(context.GroupMembers.FirstOrDefault(g => g.MemberId == userId));
-            //        context.SaveChanges();
-            //    }
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
+        }
+        public async Task<List<Member>> GetAllMembers()
+        {
+            List<Member> members = new List<Member>();
+            using (var context = new DatabaseContext(DatabaseContext.ops.dbOptions))
+            {
+                members = await context.Members.ToListAsync();
+            }
+            return members;
         }
 
-        private Boolean CreateGroupMember(string userId)
+        public async Task<Group> GetGroup(int groupId)
         {
-            try
-            {
-                using (var context = new DatabaseContext(DatabaseContext.ops.dbOptions))
-                {
-                    var newGroupMember = new Member
-                    {
-                        UserId = userId
-                    };
-                    context.Members.Add(newGroupMember);
-                    context.SaveChanges();
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-
+            var context = new DatabaseContext(DatabaseContext.ops.dbOptions);
+            Group group = context.Groups.FirstOrDefault(contextGroup => contextGroup.Id == groupId);
+            return group;
         }
 
         public async Task<List<Group>> GetAllGroups()

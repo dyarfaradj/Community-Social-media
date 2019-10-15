@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace BusinessLogic.MessageLogic
 {
-    public class GroupLogic
+    public class MessageLogic
     {
         private readonly IMessage _message = new DataAcces.Functions.MessageFunctions();
 

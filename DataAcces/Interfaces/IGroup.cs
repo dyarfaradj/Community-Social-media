@@ -10,6 +10,9 @@ namespace DataAcces.Interfaces
     {
         Task<Boolean> RegisterUserToGroup(int groupID, string userId);
         Task<Group> AddGroup(string groupTitle, string ownerId);
+
+        Task<Group> GetGroup(int groupId);
+        Task<List<Member>> GetAllMembers();
         Task<List<Group>> GetAllGroups();
     }
 }
