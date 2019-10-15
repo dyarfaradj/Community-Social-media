@@ -32,21 +32,37 @@ namespace DataAcces.Functions
 
         public async Task<Boolean> RegisterUserToGroup(int groupID, string userId)
         {
-            var context = new DatabaseContext(DatabaseContext.ops.dbOptions);
-            Group currentGroup = await context.Groups.FirstOrDefaultAsync(g => g.Id == groupID);
-            Debug.WriteLine("string format:     " + currentGroup.MemberIds.ToString());
-            currentGroup.MemberIds.Add(new GroupMember { MemberId = userId });
-            try
+            var context1 = new DatabaseContext(DatabaseContext.ops.dbOptions);
+            Group currentGroup = await context1.Groups.FirstOrDefaultAsync(g => g.Id == groupID);
+            Debug.WriteLine("GROUP ID:     " + groupID +" USERid: "+userId);
+
+
+            using (var context = new DatabaseContext(DatabaseContext.ops.dbOptions))
             {
-                context.Update(currentGroup);
-                await context.SaveChangesAsync();
-                return true;
+                // create the *NEW* Student
+                var newGroupMember = new GroupMember
+                {
+                    MemberId = userId
+                };
+                currentGroup.MemberIds.Add(newGroupMember);
+                context.GroupMembers.Add(newGroupMember);
+                context.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                Debug.WriteLine("Group not found");
-                return false;
-            }
+            return true;
+
+            //context.Groups.Add(newGroupMember);
+            //currentGroup.MemberIds.Add();
+            //try
+            //{
+            //    context.Update(currentGroup);
+            //    await context.SaveChangesAsync();
+            //    return true;
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    Debug.WriteLine("Group not found");
+            //    return false;
+            //}
         }
 
         public async Task<List<Group>> GetAllGroups()

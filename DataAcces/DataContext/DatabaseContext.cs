@@ -35,5 +35,6 @@ namespace DataAcces.DataContext
 
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupMember> GroupMembers { get; set; }
     }
 }

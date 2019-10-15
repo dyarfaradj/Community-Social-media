@@ -55,6 +55,20 @@ namespace Distribuerade_System_Labb_2.Controllers
             return RedirectToAction("CreateGroup");
         }
 
+        public async Task<IActionResult> JoinGroup(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            int groupId = id ?? default(int);
+            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+            Debug.WriteLine("zGROUP ID:     " + groupId + " USERid: " + currentUser.Id);
+            bool result = await groupLogic.RegisterToGroup(groupId, currentUser.Id);
+            return RedirectToAction("Index");
+
+        }
+
 
         private async Task<List<GroupViewModel>> GetAllGroups(string userId)
         {
