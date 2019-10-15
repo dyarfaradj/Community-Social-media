@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Distribuerade_System_Labb_2.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,5 +16,6 @@ namespace Distribuerade_System_Labb_2.Models
         public DateTime SentDate { get; set; }
         public string ReceiverId { get; set; }
         public string SenderId  { get; set; }
+        public List<Distribuerade_System_Labb_2User> Users { get; set; }
     }
 }

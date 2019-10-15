@@ -93,6 +93,20 @@ namespace Distribuerade_System_Labb_2.Controllers
         public IActionResult Create()
         {
             var users = _context.Users.ToList();
+            var usernameList = new SendMessageViewModel();
+            string currentUserId = _userManager.GetUserId(User);
+
+            usernameList.Values = users.Where(u => u.Id != currentUserId).Select((u, index) =>  new SelectListItem { Value = u.Id, Text = u.UserName });
+
+            return View(usernameList);
+        }
+
+
+
+        // GET: Messages/Create
+        public IActionResult Create3()
+        {
+            var users = _context.Users.ToList();
             List<SelectListItem> usernameList = new List<SelectListItem>();
             string currentUserId =  _userManager.GetUserId(User);
 
@@ -111,17 +125,23 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Body,ReceiverId")] MessageViewModel message)
+        public async Task<ActionResult> Create(SendMessageViewModel selectedUsers, [Bind("Title,Body,ReceiverId")] MessageViewModel message)
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                int result = await messageLogic.CreateNewMessage(message.Title, message.Body, message.ReceiverId, currentUser.Id);
+                int result = 0;
+                foreach (var u in selectedUsers.SelectedValues)
+                {
+                    message.ReceiverId = u;
+                    Debug.WriteLine("Message: " + message.Title + " " + message.Body + " " + message.ReceiverId + " " + currentUser.Id);
+                    result = await messageLogic.CreateNewMessage(message.Title, message.Body, message.ReceiverId, currentUser.Id);
+                }
                 TempData["ConfirmationMessage"] = "Meddelande nummer " + result + " avsänt till " 
                    + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
                 return RedirectToAction("Create");
             }
-            return View(message);
+            return RedirectToAction("Create");
         }
 
         // GET: Messages/Delete/5
@@ -140,11 +160,6 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MessageExists(int id)
-        {
-            return _context.Messages.Any(e => e.Id == id);
         }
 
         private Distribuerade_System_Labb_2User GetUserById(String id)
