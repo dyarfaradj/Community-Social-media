@@ -13,12 +13,21 @@
 </div>
 @if (ViewBag.NoOfReadMessages != null)
 {
-    <p>Your total read messages:</p>
+<br />
+    <br/>
+    <br />
+<span>
+    Your total read messages:
+</span>
     @ViewBag.NoOfReadMessages
-    <p> Your total unread messages:</p>
-    @ViewBag.NoOfunReadMessages
-    <p>Your total messages:</p>
-    @ViewBag.NoOfMessages
-    <p>Your total deleted messages:</p>
-    @ViewBag.NoOfDeletedMessages
-}
+    <span>
+        Your total unread messages:
+    </span>
+        @ViewBag.NoOfunReadMessages
+        <span>
+            Your total messages:
+        </span>
+        @ViewBag.NoOfMessages
+        <span>Your total deleted messages:</span>
+        @ViewBag.NoOfDeletedMessages
+    }
