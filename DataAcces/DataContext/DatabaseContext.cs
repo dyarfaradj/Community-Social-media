@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DataAcces.DataContext
 {
-    public class DatabaseContext: IdentityDbContext<User>
+    public class DatabaseContext: DbContext
     {
         public class OptionsBuild
         {
@@ -31,10 +31,29 @@ namespace DataAcces.DataContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            //builder.Entity<Group>()
+            //.HasMany(c => c.Members)
+            //.WithOne(e => e.Group);
+            //builder.Entity<Member>()
+            //.HasOne(c => c.Group)
+            //.WithMany(e => e.Members);
+            builder.Entity<Group>()
+                .HasKey(group => group.Id);
+
+            builder.Entity<Member>()
+                .HasKey(member => member.Id);
+
+            builder.Entity<Group>()
+                .HasMany<Member>(group => group.Members)
+                .WithOne(member => member.Group);
+
+            builder.Entity<Member>()
+                .HasOne<Group>(member => member.Group)
+                .WithMany(group => group.Members);
         }
 
         public DbSet<Message> Messages { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupMember> GroupMembers { get; set; }
+        public DbSet<Member> Members { get; set; }
     }
 }

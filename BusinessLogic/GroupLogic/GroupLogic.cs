@@ -55,6 +55,7 @@ namespace BusinessLogic.GroupLogic
             }
         }
 
+
         public async Task<List<Group>> GetAllGroups(string userId)
         {
             List<Group> groups = await _group.GetAllGroups();

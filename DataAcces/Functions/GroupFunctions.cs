@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,6 @@ namespace DataAcces.Functions
             {
                 GroupTitle = groupTitle,
                 OwnerId = ownerId,
-                MemberIds = null
             };
             using (context)
             {
@@ -30,39 +30,68 @@ namespace DataAcces.Functions
             return newGroup;
         }
 
-        public async Task<Boolean> RegisterUserToGroup(int groupID, string userId)
+        public async Task<Boolean> RegisterUserToGroup(int groupId, string userId)
         {
-            var context1 = new DatabaseContext(DatabaseContext.ops.dbOptions);
-            Group currentGroup = await context1.Groups.FirstOrDefaultAsync(g => g.Id == groupID);
-            Debug.WriteLine("GROUP ID:     " + groupID +" USERid: "+userId);
+            Debug.WriteLine("GROUP ID:  " + groupId + " USERid: " + userId);
 
+            var context = new DatabaseContext(DatabaseContext.ops.dbOptions);
 
-            using (var context = new DatabaseContext(DatabaseContext.ops.dbOptions))
+            Group group = context.Groups.FirstOrDefault(contextGroup => contextGroup.Id == groupId);
+            if (group != null)
             {
-                // create the *NEW* Student
-                var newGroupMember = new GroupMember
+                Member member = new Member
                 {
-                    MemberId = userId
+                    Group = group,
+                    UserId = userId,
                 };
-                currentGroup.MemberIds.Add(newGroupMember);
-                context.GroupMembers.Add(newGroupMember);
+            
+                context.Members.Add(member);
                 context.SaveChanges();
+                return true;
             }
-            return true;
+            return false;
 
-            //context.Groups.Add(newGroupMember);
-            //currentGroup.MemberIds.Add();
-            //try
+
+            ////Getting the group
+            //Group currentGroup = await context.Groups.FirstOrDefaultAsync(g => g.Id == groupId);
+
+            ////Creating a groupmember and saving
+            //if(CreateGroupMember(userId))
             //{
-            //    context.Update(currentGroup);
-            //    await context.SaveChangesAsync();
+            //    //Add groupMember to group
+            //    using (context)
+            //    {
+            //        //currentGroup.MemberIds.Add(context.GroupMembers.FirstOrDefault(g => g.MemberId == userId));
+            //        context.SaveChanges();
+            //    }
             //    return true;
             //}
-            //catch (DbUpdateConcurrencyException)
+            //else
             //{
-            //    Debug.WriteLine("Group not found");
             //    return false;
             //}
+        }
+
+        private Boolean CreateGroupMember(string userId)
+        {
+            try
+            {
+                using (var context = new DatabaseContext(DatabaseContext.ops.dbOptions))
+                {
+                    var newGroupMember = new Member
+                    {
+                        UserId = userId
+                    };
+                    context.Members.Add(newGroupMember);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
 
         public async Task<List<Group>> GetAllGroups()

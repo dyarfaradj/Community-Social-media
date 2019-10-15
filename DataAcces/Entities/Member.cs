@@ -6,11 +6,14 @@ using System.Text;
 
 namespace DataAcces.Entities
 {
-    public class GroupMember
+    public class Member
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string MemberId { get; set; }
+        public string UserId { get; set; }
+        public Group Group{ get; set; }
+        [Required]
+        public int GroupId { get; set; }
     }
 }

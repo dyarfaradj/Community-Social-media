@@ -14,8 +14,6 @@ namespace DataAcces.Entities
         public string GroupTitle { get; set; }
         [Required]
         public string OwnerId { get; set; }
-        [ForeignKey("GroupMember")]
-        public string GroupMemberId { get; set; }
-        public virtual List<GroupMember> MemberIds { get; set; }
+        public virtual List<Member> Members { get; } = new List<Member>();
     }
 }

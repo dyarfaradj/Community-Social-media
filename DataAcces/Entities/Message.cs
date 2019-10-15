@@ -21,6 +21,5 @@ namespace DataAcces.Entities
         public DateTime SentDate { get; set; }
         public string ReceiverId { get; set; }
         public string SenderId { get; set; }
-        public virtual User User { get; set; }
     }
 }

@@ -79,14 +79,14 @@ namespace Distribuerade_System_Labb_2.Controllers
             {
                 foreach (var g in groups)
                 {
-                    if(g.MemberIds != null)
+                    if(g.Members != null)
                     {
-                        foreach (var gMember in g.MemberIds)
+                        foreach (var gMember in g.Members)
                         {
                             GroupMemberViewModel currentMember = new GroupMemberViewModel
                             {
                                 Id = gMember.Id,
-                                MemberId = gMember.MemberId
+                                UserId = gMember.UserId
                             };
                             groupMembers.Add(currentMember);
                         }
