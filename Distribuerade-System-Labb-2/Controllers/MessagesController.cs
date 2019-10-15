@@ -130,15 +130,17 @@ namespace Distribuerade_System_Labb_2.Controllers
              Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if(ModelState.IsValid)
             {
+                List<string> usersSentTo = new List<string>();
                 int result = 0;
                 foreach (var u in sendMessageViewModel.SelectedValues)
                 {
                     sendMessageViewModel.ReceiverId = u;
+                    usersSentTo.Add(GetUserById(sendMessageViewModel.ReceiverId).UserName);
                     Debug.WriteLine("Message: " + sendMessageViewModel.TitleMessage + " " + sendMessageViewModel.Body + " " + sendMessageViewModel.ReceiverId + " " + currentUser.Id);
                     result = await messageLogic.CreateNewMessage(sendMessageViewModel.TitleMessage, sendMessageViewModel.Body, sendMessageViewModel.ReceiverId, currentUser.Id);
                 }
                 TempData["ConfirmationMessage"] = "Meddelande nummer " + result + " avsänt till " 
-                   + GetUserById(sendMessageViewModel.ReceiverId).UserName + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
+                   + String.Join(", ", usersSentTo.ToArray()) + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
                 return RedirectToAction("Create");
             }
             return RedirectToAction("Create");
