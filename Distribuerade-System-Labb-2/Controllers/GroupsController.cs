@@ -178,6 +178,7 @@ namespace Distribuerade_System_Labb_2.Controllers
                                 Id = gMember.Id,
                                 UserId = gMember.UserId
                             };
+                            if(g.Id == gMember.GroupId)
                             groupMembers.Add(currentMember);
                         }
                         GroupViewModel currentGroup = new GroupViewModel

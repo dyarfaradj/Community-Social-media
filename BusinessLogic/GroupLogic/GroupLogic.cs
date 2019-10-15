@@ -95,11 +95,18 @@ namespace BusinessLogic.GroupLogic
         public async Task<List<Group>> GetAllGroups(string userId)
         {
             List<Group> groups = await _group.GetAllGroups();
+            List<Member> members = await _group.GetAllMembers();
             List<Group> groupsList = new List<Group>();
             foreach (Group g in groups)
             {
-                if (g.OwnerId != userId)
-                    groupsList.Add(g);
+                bool userIsInGroup = false;
+                foreach (Member m in members)
+                {
+                    if (g.Id == m.GroupId)
+                        userIsInGroup = true;
+                }
+                if (g.OwnerId != userId && !userIsInGroup)
+                groupsList.Add(g);
             }
 
             return groupsList;
