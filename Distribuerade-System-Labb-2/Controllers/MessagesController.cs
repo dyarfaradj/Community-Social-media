@@ -45,13 +45,13 @@ namespace Distribuerade_System_Labb_2.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
        // public async Task<ActionResult> MessageOfUser([Bind("Id,Title,Body,Read,Deleted,SentDate,ReceiverId")] MessageViewModel messageViewModel)
-        public async Task<ActionResult> MessageOfUser(IEnumerable<MessageViewModel> messages)
+        public async Task<ActionResult> MessageOfUser(List<MessageViewModel> messages)
         {
             Debug.WriteLine("11111:");
             if (ModelState.IsValid)
             {
                 Debug.WriteLine("22222:");
-                foreach (var m in messages)
+                foreach (MessageViewModel m in messages)
                 {
                     Debug.WriteLine("3333:");
                     if (m.Read)
