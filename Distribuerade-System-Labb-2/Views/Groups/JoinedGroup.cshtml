@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<Distribuerade_System_Labb_2.Models.GroupViewModel>
 
 @{
-    ViewData["Title"] = "MyGroups";
+    ViewData["Title"] = "JoinedGroup";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h1>My Groups</h1>
-
+    <h1>JoinedGroup</h1>
 <table class="table">
     <thead>
         <tr>
@@ -28,9 +27,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OwnerId)
-                </td>
-                <td>
-                    <a asp-action="SendGroupMessage" asp-route-id="@item.Id">Send a message</a> |
                 </td>
             </tr>
         }

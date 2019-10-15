@@ -2,12 +2,23 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-    </div>
-    <div class="iphone">
-        <div class="border">
-            <div class="responsive-html5-chat">
-            </div>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div class="iphone">
+    <div class="border">
+        <div class="responsive-html5-chat">
         </div>
     </div>
+</div>
+@if (ViewBag.NoOfReadMessages != null)
+{
+    <p>Your total read messages:</p>
+    @ViewBag.NoOfReadMessages
+    <p> Your total unread messages:</p>
+    @ViewBag.NoOfunReadMessages
+    <p>Your total messages:</p>
+    @ViewBag.NoOfMessages
+    <p>Your total deleted messages:</p>
+    @ViewBag.NoOfDeletedMessages
+}
