@@ -71,6 +71,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             List<Distribuerade_System_Labb_2User> users = new List<Distribuerade_System_Labb_2User>();
             int SumDeleted = await messageLogic.HowManyMessageDeleted(currentUser.Id);
             int SumRead = await messageLogic.HowManyMessagesRead(currentUser.Id);
+            int SumUnRead = await messageLogic.HowManyMessagesUnRead(currentUser.Id);
             int TotMessages = await messageLogic.HowManyMessages(currentUser.Id);
 
             foreach (var m in messageList)
@@ -84,6 +85,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             ViewBag.NoOfDeletedMessages = SumDeleted;
             ViewBag.NoOfMessages = TotMessages;
             ViewBag.NoOfReadMessages = SumRead;
+            ViewBag.NoOfUnReadMessages = SumUnRead;
             return View(users);
         }
 

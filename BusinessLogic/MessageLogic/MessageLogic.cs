@@ -139,8 +139,20 @@ namespace BusinessLogic.MessageLogic
             foreach (Message m in messages)
             {
                 if (m.ReceiverId.Equals(Id))
-                    if (m.Deleted == false && m.Read !=false)
-                    total++;
+                    if (m.Deleted == false && m.Read != false)
+                        total++;
+            }
+            return total;
+        }
+        public async Task<int> HowManyMessagesUnRead(String Id)
+        {
+            List<Message> messages = await _message.GetAllMessages();
+            int total = 0;
+            foreach (Message m in messages)
+            {
+                if (m.ReceiverId.Equals(Id))
+                    if (m.Deleted == false && m.Read == false)
+                        total++;
             }
             return total;
         }
