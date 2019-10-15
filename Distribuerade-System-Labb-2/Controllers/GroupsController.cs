@@ -43,6 +43,13 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(groups);
         }
 
+        public async Task<IActionResult> JoinedGroup()
+        {
+            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+            List<GroupViewModel> groups = await GetAllJoinedGroup(currentUser.Id);
+            return View(groups);
+        }
+
 
         // GET: Messages/Create
         public IActionResult CreateGroup()
@@ -163,6 +170,51 @@ namespace Distribuerade_System_Labb_2.Controllers
                 foreach (var g in groups)
                 {
                     if(g.Members != null)
+                    {
+                        foreach (var gMember in g.Members)
+                        {
+                            GroupMemberViewModel currentMember = new GroupMemberViewModel
+                            {
+                                Id = gMember.Id,
+                                UserId = gMember.UserId
+                            };
+                            groupMembers.Add(currentMember);
+                        }
+                        GroupViewModel currentGroup = new GroupViewModel
+                        {
+                            Id = g.Id,
+                            GroupTitle = g.GroupTitle,
+                            OwnerId = g.OwnerId,
+                            MemberIds = groupMembers
+
+                        };
+                        groupList.Add(currentGroup);
+                    }
+                    else
+                    {
+                        GroupViewModel currentGroup = new GroupViewModel
+                        {
+                            Id = g.Id,
+                            GroupTitle = g.GroupTitle,
+                            OwnerId = g.OwnerId,
+                        };
+                        groupList.Add(currentGroup);
+                    }
+                }
+            }
+            return groupList;
+        }
+
+        private async Task<List<GroupViewModel>> GetAllJoinedGroup(string userId)
+        {
+            List<GroupViewModel> groupList = new List<GroupViewModel>();
+            List<GroupMemberViewModel> groupMembers = new List<GroupMemberViewModel>();
+            var groups = await groupLogic.GetAllMyJoinedGroup(userId);
+            if (groups.Count > 0)
+            {
+                foreach (var g in groups)
+                {
+                    if (g.Members != null)
                     {
                         foreach (var gMember in g.Members)
                         {
