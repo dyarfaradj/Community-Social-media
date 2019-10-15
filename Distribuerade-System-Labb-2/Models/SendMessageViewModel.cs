@@ -13,9 +13,11 @@ namespace Distribuerade_System_Labb_2.Models
         public int Id { get; set; }
         public string Username { get; set; }
         [Required(ErrorMessage = "Enter title for the message")]
+        [StringLength(60, MinimumLength = 3)]
         public string TitleMessage { get; set; }
         public string ReceiverId { get; set; }
         [Required(ErrorMessage = "Type something in the mail")]
+        [StringLength(60, MinimumLength = 3)]
         public string Body { get; set; }
         [Required(ErrorMessage = "Select one or more people")]
         public string[] SelectedValues { get; set; }
