@@ -125,9 +125,9 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Title,Body,ReceiverId")] SendMessageViewModel sendMessageViewModel)
+        public async Task<ActionResult> Create([Bind("TitleMessage,Body,SelectedValues")] SendMessageViewModel sendMessageViewModel)
         {
-            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if(ModelState.IsValid)
             {
                 int result = 0;

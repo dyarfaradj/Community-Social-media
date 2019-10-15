@@ -14,7 +14,6 @@ namespace Distribuerade_System_Labb_2.Models
         public string Username { get; set; }
         [Required(ErrorMessage = "Enter title for the message")]
         public string TitleMessage { get; set; }
-        [Required(ErrorMessage = "Type something in the mail")]
         public string ReceiverId { get; set; }
         [Required(ErrorMessage = "Type something in the mail")]
         public string Body { get; set; }
