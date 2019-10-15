@@ -28,7 +28,10 @@ namespace Distribuerade_System_Labb_2.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        /// <summary>
+        /// GET INDEX
+        /// </summary>
+        /// <returns>Conversations</returns>
         public async Task<IActionResult> Index()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
@@ -36,6 +39,10 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(groups);
         }
 
+        /// <summary>
+        /// GET All groups of user logged in 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> MyGroups()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
@@ -43,6 +50,10 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(groups);
         }
 
+        /// <summary>
+        /// GET List of joined groups
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> JoinedGroup()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
@@ -51,12 +62,20 @@ namespace Distribuerade_System_Labb_2.Controllers
         }
 
 
-        // GET: Messages/Create
+       /// <summary>
+       /// GET Create group page
+       /// </summary>
+       /// <returns></returns>
         public IActionResult CreateGroup()
         {
             return View();
         }
 
+        /// <summary>
+        /// POST new group
+        /// </summary>
+        /// <param name="group">group model</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateGroup([Bind("GroupTitle")] GroupViewModel group)
@@ -71,7 +90,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             return RedirectToAction("CreateGroup");
         }
 
-        // GET: Messages/Create
+        /// <summary>
+        /// GET SendMessagePage details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> SendGroupMessage(int? id)
         {
             if (id == null)
@@ -87,9 +110,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(usernameList);
         }
 
-        // POST: Messages/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST Sends messages to multiple users
+        /// </summary>
+        /// <param name="sendMessageViewModel">sendmessage model</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendGroupMessage([Bind("TitleMessage,Body,SelectedValues")] SendMessageViewModel sendMessageViewModel)
@@ -112,6 +137,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             return RedirectToAction("CreateGroup");
         }
 
+        /// <summary>
+        /// GET Join group page
+        /// </summary>
+        /// <param name="id">Id of group</param>
+        /// <returns></returns>
         public async Task<IActionResult> JoinGroup(int? id)
         {
             if (id == null)
@@ -124,6 +154,12 @@ namespace Distribuerade_System_Labb_2.Controllers
             return RedirectToAction("Index");
 
         }
+
+        /// <summary>
+        /// Members To User Mapping
+        /// </summary>
+        /// <param name="memberList">model</param>
+        /// <returns></returns>
         private async Task<List<Distribuerade_System_Labb_2User>> MemberToUserList(List<GroupMemberViewModel> memberList)
         {
             List<Distribuerade_System_Labb_2User> userList = new List<Distribuerade_System_Labb_2User>();
@@ -134,11 +170,21 @@ namespace Distribuerade_System_Labb_2.Controllers
             }
             return userList;
         }
+        /// <summary>
+        /// Gets User by id
+        /// </summary>
+        /// <param name="id">id of user</param>
+        /// <returns></returns>
         private Distribuerade_System_Labb_2User GetUserById(String id)
         {
             return _context.Users.Find(id);
         }
 
+        /// <summary>
+        /// Gets all members of a group
+        /// </summary>
+        /// <param name="groupId">group id</param>
+        /// <returns></returns>
         private async Task<List<GroupMemberViewModel>> GetAllMembersOfGroup(int groupId)
         {
             List<GroupMemberViewModel> groupMemberList = new List<GroupMemberViewModel>();
