@@ -125,20 +125,20 @@ namespace Distribuerade_System_Labb_2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(SendMessageViewModel selectedUsers, [Bind("Title,Body,ReceiverId")] MessageViewModel message)
+        public async Task<ActionResult> Create([Bind("Title,Body,ReceiverId")] SendMessageViewModel sendMessageViewModel)
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
             if(ModelState.IsValid)
             {
                 int result = 0;
-                foreach (var u in selectedUsers.SelectedValues)
+                foreach (var u in sendMessageViewModel.SelectedValues)
                 {
-                    message.ReceiverId = u;
-                    Debug.WriteLine("Message: " + message.Title + " " + message.Body + " " + message.ReceiverId + " " + currentUser.Id);
-                    result = await messageLogic.CreateNewMessage(message.Title, message.Body, message.ReceiverId, currentUser.Id);
+                    sendMessageViewModel.ReceiverId = u;
+                    Debug.WriteLine("Message: " + sendMessageViewModel.TitleMessage + " " + sendMessageViewModel.Body + " " + sendMessageViewModel.ReceiverId + " " + currentUser.Id);
+                    result = await messageLogic.CreateNewMessage(sendMessageViewModel.TitleMessage, sendMessageViewModel.Body, sendMessageViewModel.ReceiverId, currentUser.Id);
                 }
                 TempData["ConfirmationMessage"] = "Meddelande nummer " + result + " avsänt till " 
-                   + GetUserById(message.ReceiverId).UserName + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
+                   + GetUserById(sendMessageViewModel.ReceiverId).UserName + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
                 return RedirectToAction("Create");
             }
             return RedirectToAction("Create");
