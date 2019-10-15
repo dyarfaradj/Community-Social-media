@@ -101,25 +101,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(usernameList);
         }
 
-
-
-        // GET: Messages/Create
-        public IActionResult Create3()
-        {
-            var users = _context.Users.ToList();
-            List<SelectListItem> usernameList = new List<SelectListItem>();
-            string currentUserId =  _userManager.GetUserId(User);
-
-            foreach (Distribuerade_System_Labb_2User u in users)
-            {
-                if(u.Id != currentUserId) //Tar bort personen själv i listan
-                 usernameList.Add(new SelectListItem { Value = u.Id, Text = u.UserName });
-            }
-
-            ViewBag.Users = new SelectList(usernameList, "Value", "Text");
-            return View();
-        }
-
         // POST: Messages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
