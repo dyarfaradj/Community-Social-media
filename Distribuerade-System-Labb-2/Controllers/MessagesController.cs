@@ -28,7 +28,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             _userManager = userManager;
         }
 
-        // GET: Messages
+        /// <summary>
+        /// Gets messages for one resiver from one only on sender.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of messages</returns>
         public async Task<IActionResult> MessageOfUser(string id)
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
@@ -42,6 +46,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(messages);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> MessageOfUser(List<MessageViewModel> messages)
@@ -85,7 +94,11 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(users);
         }
 
-        // GET: Messages/Details/
+        /// <summary>
+        /// Gets message details 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Massge</returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -115,7 +128,11 @@ namespace Distribuerade_System_Labb_2.Controllers
 
         }
 
-        // GET: Messages/Create
+        /// <summary>
+        /// Create message
+        /// </summary>
+        /// <param </param>
+        /// <returns></returns>
         public IActionResult Create()
         {
             var users = _context.Users.ToList();
@@ -176,7 +193,7 @@ namespace Distribuerade_System_Labb_2.Controllers
         {
             return _context.Users.Find(id);
         }
-
+        //Get: 
         private async Task<List<MessageViewModel>> GetAllMessages()
         {
             List<MessageViewModel> messageList = new List<MessageViewModel>();
