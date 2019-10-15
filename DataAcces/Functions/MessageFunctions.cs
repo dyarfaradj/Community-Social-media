@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,6 +68,13 @@ namespace DataAcces.Functions
                 Debug.WriteLine("Message not found");
                 return currentMessage;
             }
+        }
+
+        public async Task<Message> GetMessage(int messageId)
+        {
+            var context = new DatabaseContext(DatabaseContext.ops.dbOptions);
+            Message message = context.Messages.FirstOrDefault(contextMessage => contextMessage.Id == messageId);
+            return message;
         }
 
         public async Task<List<Message>> GetAllMessages()

@@ -93,7 +93,11 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
             int messageId = id ?? default(int);
-
+            bool isItForMe = await IsMessageForMe(messageId);
+            if (!isItForMe)
+            {
+                return NotFound();
+            }
             var m = await messageLogic.ReadMessage(messageId);
             MessageViewModel currentMessage = new MessageViewModel
             {
@@ -156,7 +160,11 @@ namespace Distribuerade_System_Labb_2.Controllers
                 return NotFound();
             }
             int messageId = id ?? default(int);
-
+            bool isItForMe = await IsMessageForMe(messageId);
+            if (!isItForMe)
+            {
+                return NotFound();
+            }
             bool result = await messageLogic.DeleteMessage(messageId);
 
             if (result == false)
@@ -246,8 +254,9 @@ namespace Distribuerade_System_Labb_2.Controllers
         }
 
 
-        private bool IsMessageForMe(MessageViewModel message)
+        private async Task<bool> IsMessageForMe(int messageId)
         {
+            var message = await messageLogic.GetMessage(messageId);
             string currentUserId = _userManager.GetUserId(User);
             return message.ReceiverId.Equals(currentUserId);
         }

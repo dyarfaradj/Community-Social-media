@@ -12,5 +12,6 @@ namespace DataAcces.Interfaces
         Task<Boolean> DeleteMessage(int messageId);
         Task<Message> ReadMessage(int messageId);
         Task<List<Message>> GetAllMessages();
+        Task<Message> GetMessage(int messageId);
     }
 }

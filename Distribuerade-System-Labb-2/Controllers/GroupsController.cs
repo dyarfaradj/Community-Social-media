@@ -96,7 +96,6 @@ namespace Distribuerade_System_Labb_2.Controllers
                 {
                     sendMessageViewModel.ReceiverId = u;
                     usersSentTo.Add(GetUserById(sendMessageViewModel.ReceiverId).UserName);
-                    Debug.WriteLine("Message: " + sendMessageViewModel.TitleMessage + " " + sendMessageViewModel.Body + " " + sendMessageViewModel.ReceiverId + " " + currentUser.Id);
                     result = await messageLogic.CreateNewMessage(sendMessageViewModel.TitleMessage, sendMessageViewModel.Body, sendMessageViewModel.ReceiverId, currentUser.Id);
                 }
                 TempData["ConfirmationMessage"] = "Grupp meddelande  avsänt till "
@@ -114,7 +113,6 @@ namespace Distribuerade_System_Labb_2.Controllers
             }
             int groupId = id ?? default(int);
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
-            Debug.WriteLine("zGROUP ID:     " + groupId + " USERid: " + currentUser.Id);
             bool result = await groupLogic.RegisterToGroup(groupId, currentUser.Id);
             return RedirectToAction("Index");
 

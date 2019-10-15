@@ -70,6 +70,22 @@ namespace BusinessLogic.MessageLogic
             }
         }
 
+        public async Task<Message> GetMessage(int messageId)
+        {
+            try
+            {
+                Message result = await _message.GetMessage(messageId);
+
+                return result;
+
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+                return null;
+            }
+        }
+
         public async Task<List<Message>> GetAllMessages()
         {
             List<Message> messages = await _message.GetAllMessages();
