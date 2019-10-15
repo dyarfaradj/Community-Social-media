@@ -11,6 +11,7 @@ using Distribuerade_System_Labb_2.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using BusinessLogic.MessageLogic;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace Distribuerade_System_Labb_2.Controllers
 {
@@ -43,22 +44,21 @@ namespace Distribuerade_System_Labb_2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> MessageOfUser([Bind("TitleMessage,Body,SelectedValues")] SendMessageViewModel sendMessageViewModel)
+       // public async Task<ActionResult> MessageOfUser([Bind("Id,Title,Body,Read,Deleted,SentDate,ReceiverId")] MessageViewModel messageViewModel)
+        public async Task<ActionResult> MessageOfUser(IEnumerable<MessageViewModel> messages)
         {
-            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+            Debug.WriteLine("11111:");
             if (ModelState.IsValid)
             {
-                List<string> usersSentTo = new List<string>();
-                int result = 0;
-                foreach (var u in sendMessageViewModel.SelectedValues)
+                Debug.WriteLine("22222:");
+                foreach (var m in messages)
                 {
-                    sendMessageViewModel.ReceiverId = u;
-                    usersSentTo.Add(GetUserById(sendMessageViewModel.ReceiverId).UserName);
-                    Debug.WriteLine("Message: " + sendMessageViewModel.TitleMessage + " " + sendMessageViewModel.Body + " " + sendMessageViewModel.ReceiverId + " " + currentUser.Id);
-                    result = await messageLogic.CreateNewMessage(sendMessageViewModel.TitleMessage, sendMessageViewModel.Body, sendMessageViewModel.ReceiverId, currentUser.Id);
+                    Debug.WriteLine("3333:");
+                    if (m.Read)
+                    {
+                        await messageLogic.ReadMessage(m.Id);
+                    }
                 }
-                TempData["ConfirmationMessage"] = "Meddelande nummer " + result + " avsänt till "
-                   + String.Join(", ", usersSentTo.ToArray()) + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
                 return RedirectToAction("MessageOfUser");
             }
             return RedirectToAction("MessageOfUser");

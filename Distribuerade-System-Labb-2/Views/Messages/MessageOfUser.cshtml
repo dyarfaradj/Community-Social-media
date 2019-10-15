@@ -28,6 +28,12 @@
             {
                 <tr>
                     <td>
+                        @Html.HiddenFor(model => item.Id)
+                        @Html.HiddenFor(model => item.Body)
+                        @Html.HiddenFor(model => item.Deleted)
+                        @Html.HiddenFor(model => item.ReceiverId)
+                        @Html.HiddenFor(model => item.SenderId)
+                        @Html.HiddenFor(model => item.Users)
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td>
