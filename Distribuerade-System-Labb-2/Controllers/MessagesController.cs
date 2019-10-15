@@ -40,6 +40,30 @@ namespace Distribuerade_System_Labb_2.Controllers
             List<MessageViewModel> messages = await GetAllMessagesFrom(id, currentUser.Id);
             return View(messages);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> MessageOfUser([Bind("TitleMessage,Body,SelectedValues")] SendMessageViewModel sendMessageViewModel)
+        {
+            Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);
+            if (ModelState.IsValid)
+            {
+                List<string> usersSentTo = new List<string>();
+                int result = 0;
+                foreach (var u in sendMessageViewModel.SelectedValues)
+                {
+                    sendMessageViewModel.ReceiverId = u;
+                    usersSentTo.Add(GetUserById(sendMessageViewModel.ReceiverId).UserName);
+                    Debug.WriteLine("Message: " + sendMessageViewModel.TitleMessage + " " + sendMessageViewModel.Body + " " + sendMessageViewModel.ReceiverId + " " + currentUser.Id);
+                    result = await messageLogic.CreateNewMessage(sendMessageViewModel.TitleMessage, sendMessageViewModel.Body, sendMessageViewModel.ReceiverId, currentUser.Id);
+                }
+                TempData["ConfirmationMessage"] = "Meddelande nummer " + result + " avsänt till "
+                   + String.Join(", ", usersSentTo.ToArray()) + ", " + DateTime.Now.ToString("HH:mm yyyy-MM-dd");
+                return RedirectToAction("MessageOfUser");
+            }
+            return RedirectToAction("MessageOfUser");
+        }
+
         public async Task<IActionResult> Index()
         {
             Distribuerade_System_Labb_2User currentUser = await _userManager.GetUserAsync(User);

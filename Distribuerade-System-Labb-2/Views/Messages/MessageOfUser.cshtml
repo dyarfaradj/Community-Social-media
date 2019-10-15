@@ -6,51 +6,53 @@
 }
 
 <h1>Index</h1>
+@using (Html.BeginForm("MessageOfUser", "Messages", FormMethod.Post))
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Read)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SentDate)
+                    </td>
+                    <td>
+                        @if (item.Read == true)
+                        {
+                            @Html.CheckBoxFor(modelItem => item.Read, new { @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.CheckBoxFor(modelItem => item.Read)
+                        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SentDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Read)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SentDate)
-            </td>
-            <td>
-                @if (item.Read == true)
-                {
-                    @Html.CheckBoxFor(modelItem => item.Read, new { @disabled = "disabled"})
-                }
-                else
-                {
-                    @Html.CheckBoxFor(modelItem => item.Read)
-                }
-
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">View Message</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">View Message</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <input type="submit" value="Read Messages" class="btn btn-primary" />
+    </div>
+}
