@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAcces.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191014113531_4344")]
-    partial class _4344
+    [Migration("20191015154055_addedGroup5")]
+    partial class addedGroup5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,43 @@ namespace DataAcces.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DataAcces.Entities.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("GroupMemberId");
+
+                    b.Property<string>("GroupTitle")
+                        .IsRequired();
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("DataAcces.Entities.GroupMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("GroupId");
+
+                    b.Property<string>("MemberId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupMember");
+                });
 
             modelBuilder.Entity("DataAcces.Entities.Message", b =>
                 {
@@ -217,9 +254,16 @@ namespace DataAcces.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DataAcces.Entities.GroupMember", b =>
+                {
+                    b.HasOne("DataAcces.Entities.Group")
+                        .WithMany("MemberIds")
+                        .HasForeignKey("GroupId");
+                });
+
             modelBuilder.Entity("DataAcces.Entities.Message", b =>
                 {
-                    b.HasOne("DataAcces.Entities.User")
+                    b.HasOne("DataAcces.Entities.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId");
                 });

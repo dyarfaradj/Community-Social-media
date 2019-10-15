@@ -17,7 +17,7 @@ namespace Distribuerade_System_Labb_2.Controllers
     [Authorize]
     public class MessagesController : Controller
     {
-        private readonly MessageLogic messageLogic = new MessageLogic();
+        private readonly GroupLogic messageLogic = new GroupLogic();
         private readonly Distribuerade_System_Labb_2Context _context;
         private readonly UserManager<Distribuerade_System_Labb_2User> _userManager;
 

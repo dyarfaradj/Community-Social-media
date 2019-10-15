@@ -2,7 +2,7 @@
 
 namespace DataAcces.Migrations
 {
-    public partial class _4344 : Migration
+    public partial class addedGroup6 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
