@@ -85,7 +85,7 @@ namespace Distribuerade_System_Labb_2.Controllers
             return View(users);
         }
 
-        // GET: Messages/Details/5
+        // GET: Messages/Details/
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -128,8 +128,6 @@ namespace Distribuerade_System_Labb_2.Controllers
         }
 
         // POST: Messages/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("TitleMessage,Body,SelectedValues")] SendMessageViewModel sendMessageViewModel)

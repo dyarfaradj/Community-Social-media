@@ -65,7 +65,6 @@ namespace DataAcces.Functions
             }
             catch (DbUpdateConcurrencyException)
             {
-                Debug.WriteLine("Message not found");
                 return currentMessage;
             }
         }
