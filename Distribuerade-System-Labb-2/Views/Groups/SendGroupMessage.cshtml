@@ -5,42 +5,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Group Message</h1>
 
-<h4>Message</h4>
+<h4>Compose a message for the group users</h4>
 <hr />
-<div class="row">
-    @using (Html.BeginForm("SendGroupMessage", "Groups", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-inline" }))
+ @using (Html.BeginForm("SendGroupMessage", "Groups", FormMethod.Post))
     {
-        <div class="col-1">
-            <form asp-action="SendGroupMessage">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="TitleMessage" name="Title" class="control-label">Message Title</label>
-                    @Html.TextBox("TitleMessage")
-                    <span asp-validation-for="TitleMessage" class="text-danger"></span>
+
+        <div class="messages"></div>
+
+        <div class="controls">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="TitleMessage" name="Title">Title *</label>
+                        <input asp-for="TitleMessage" id="TitleMessage" type="text" name="TitleMessage" class="form-control" placeholder="Please enter a title *" required="required">
+                        <span asp-validation-for="TitleMessage" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Body" name="Body" class="control-label">Message</label>
-                    @Html.TextArea("Body")
-                    <span asp-validation-for="Body" class="text-danger"></span>
+                <div class="col-md-6">
+
                 </div>
-                <div class="form-group">
-                    <label asp-for="SelectedValues" class="control-label">Select people to send to</label>
-                    @Html.DropDownListFor(x => x.SelectedValues, Model.Values, new { multiple = "true" })
-                    <span asp-validation-for="SelectedValues" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SelectedValues" class="control-label">Select people to send to</label>
+                        @Html.DropDownListFor(x => x.SelectedValues, Model.Values, new { multiple = "true" })
+                        <span asp-validation-for="SelectedValues" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                <div class="col-md-6">
                 </div>
-            </form>
-            @if (TempData["ConfirmationMessage"] != null)
-            {
-                <div class="alert alert-success">@TempData["ConfirmationMessage"]</div>
-            }
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Body" name="Body">Message *</label>
+                        <textarea asp-for="Body" name="Body" id="Body" class="form-control" placeholder="Message for me *" rows="4" required="required" data-error="Please, leave us a message."></textarea>
+                        <span asp-validation-for="SelectedValues" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" class="btn btn-success btn-send" value="Send message">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+            </div>
         </div>
+        @if (TempData["ConfirmationMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["ConfirmationMessage"]</div>
+        }
     }
-</div>
 <div>
     <a asp-action="MyGroups">Back to List</a>
 </div>
