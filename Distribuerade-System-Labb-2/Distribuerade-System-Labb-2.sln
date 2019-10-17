@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Distribuerade-System-Labb-2", "Distribuerade-System-Labb-2.csproj", "{4F0D40DD-6257-438A-B81B-11886AFC9886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAcces", "..\DataAcces\DataAcces.csproj", "{CDEEDDC9-80CA-4D25-A1E7-958430118FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAcces", "..\DataAcces\DataAcces.csproj", "{CDEEDDC9-80CA-4D25-A1E7-958430118FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "..\BusinessLogic\BusinessLogic.csproj", "{563B4495-8975-4D5E-BC0A-BB8E539A3156}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "..\BusinessLogic\BusinessLogic.csproj", "{563B4495-8975-4D5E-BC0A-BB8E539A3156}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6F9EC7D5-B480-4E97-9968-9675811DA3A5}"
+	ProjectSection(SolutionItems) = preProject
+		classdiagram.cd = classdiagram.cd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
