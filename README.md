@@ -1,2 +1,2 @@
-# Distribuerade-System-Labb-2
- Distribuerade-System-Labb-2
+# Community (Social media) in ASP.NET MVC
+ Message others through private message or group messages
